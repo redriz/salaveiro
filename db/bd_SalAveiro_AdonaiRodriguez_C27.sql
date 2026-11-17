@@ -5,7 +5,7 @@ USE bdSalAveiro_AdonaiRodriguez_C27;
 
 CREATE TABLE trabalhador (
     id INT AUTO_INCREMENT NOT NULL,
-    nome VARCHAR(100) NOT NULL,
+    nome VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL,
     telefone VARCHAR(14),
     PRIMARY KEY (id)
@@ -15,7 +15,7 @@ CREATE TABLE utilizador (
     id INT AUTO_INCREMENT NOT NULL,
     nome VARCHAR(50) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    trabalhador_id INT NOT NULL,
+    trabalhador_id INT DEFAULT NULL,
     is_admin BOOLEAN DEFAULT FALSE,
     is_operator BOOLEAN DEFAULT FALSE,
     is_active BOOLEAN DEFAULT TRUE,
@@ -23,15 +23,36 @@ CREATE TABLE utilizador (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE salina (
+    id INT AUTO_INCREMENT NOT NULL,
+    nome VARCHAR(50) NOT NULL,
+    trabalhador_id INT DEFAULT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (trabalhador_id) REFERENCES trabalhador(id),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE tanque (
+    id INT AUTO_INCREMENT NOT NULL,
+    salina_id INT NOT NULL,
+    nome VARCHAR(50) NOT NULL,
+    estado ENUM('ativo', 'em manutenção', 'inativo') NOT NULL DEFAULT 'ativo',
+    UNIQUE (salina_id, nome),
+    FOREIGN KEY (salina_id) REFERENCES salina(id) ON DELETE CASCADE,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
 CREATE TABLE categoria_sal (
     id INT AUTO_INCREMENT NOT NULL,
-    nome VARCHAR(100) NOT NULL,
+    nome VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE produto (
     id INT AUTO_INCREMENT NOT NULL,
-    nome VARCHAR(100) NOT NULL,
+    nome VARCHAR(50) NOT NULL,
     descricao TEXT,
     peso DECIMAL(10, 1) NOT NULL,
     preco DECIMAL(10, 2) NOT NULL,
@@ -43,7 +64,7 @@ CREATE TABLE produto (
 
 CREATE TABLE cliente (
     id INT AUTO_INCREMENT NOT NULL,
-    nome VARCHAR(100) NOT NULL,
+    nome VARCHAR(50) NOT NULL,
     nif VARCHAR(10) NOT NULL,
     email VARCHAR(100) NOT NULL,
     morada VARCHAR(255) NOT NULL,
@@ -86,7 +107,28 @@ INSERT INTO trabalhador (nome, email, telefone) VALUES
 INSERT INTO utilizador (nome, password_hash, trabalhador_id, is_admin, is_operator, is_active) VALUES
 ('admin', '$2y$12$S/RCqyjNHw3ux1bW0FGWMutVjPMRGb6dYFm7bNLrxaRPmZCBAStnK', 1, TRUE, FALSE, TRUE),
 ('operador', '$2y$12$S/RCqyjNHw3ux1bW0FGWMutVjPMRGb6dYFm7bNLrxaRPmZCBAStnK', 2, FALSE, TRUE, TRUE),
-('usuario', '$2y$12$S/RCqyjNHw3ux1bW0FGWMutVjPMRGb6dYFm7bNLrxaRPmZCBAStnK', 3, FALSE, FALSE, TRUE);
+('usuario1', '$2y$12$S/RCqyjNHw3ux1bW0FGWMutVjPMRGb6dYFm7bNLrxaRPmZCBAStnK', 3, FALSE, FALSE, TRUE),
+('usuario2', '$2y$12$S/RCqyjNHw3ux1bW0FGWMutVjPMRGb6dYFm7bNLrxaRPmZCBAStnK', NULL, FALSE, FALSE, TRUE),
+('usuario3', '$2y$12$S/RCqyjNHw3ux1bW0FGWMutVjPMRGb6dYFm7bNLrxaRPmZCBAStnK', NULL, FALSE, FALSE, TRUE);
+
+INSERT INTO salina (nome, trabalhador_id, is_active) VALUES
+('Salina A', 1, TRUE),
+('Salina B', 2, TRUE),
+('Salina C', 3, TRUE),
+('Salina D', 4, TRUE),
+('Salina E', 5, TRUE);
+
+INSERT INTO tanque (salina_id, nome, estado) VALUES
+(1, 'Tanque 1', 'ativo'),
+(1, 'Tanque 2', 'em manutenção'),
+(2, 'Tanque 3', 'ativo'),
+(2, 'Tanque 4', 'inativo'),
+(3, 'Tanque 5', 'ativo'),
+(3, 'Tanque 6', 'ativo'),
+(4, 'Tanque 7', 'em manutenção'),
+(4, 'Tanque 8', 'ativo'),
+(5, 'Tanque 9', 'inativo'),
+(5, 'Tanque 10', 'ativo');
 
 INSERT INTO categoria_sal (nome) VALUES
 ('Sais Alimentares'),
