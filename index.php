@@ -27,6 +27,10 @@ switch ($page) {
         require_once 'app/controllers/SalinaController.php';
         $controller = new SalinaController();
         break;
+    case 'tanques':
+        require_once 'app/controllers/TanqueController.php';
+        $controller = new TanqueController();
+        break;
     // producao, comercial externos
     case 'dashboard':
     default:
