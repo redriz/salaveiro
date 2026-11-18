@@ -1,15 +1,17 @@
 <?php
+require_once __DIR__ . '/Env.php';
+
 class Database
 {
-    private $host = 'localhost';
-    private $port = '3306';
-    private $db = 'bdsalaveiro_adonairodriguez_C27';
-    private $user = 'root';
-    private $pass = '';
-
     public function connect()
     {
-        $conn = new PDO("mysql:host=$this->host;port=$this->port;dbname=$this->db;charset=utf8mb4", $this->user, $this->pass);
+        $host = Env::get('DB_HOST', 'localhost');
+        $port = Env::get('DB_PORT', '3306');
+        $db   = Env::get('DB_NAME');
+        $user = Env::get('DB_USER', 'root');
+        $pass = Env::get('DB_PASS');
+
+        $conn = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4", $user, $pass);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);

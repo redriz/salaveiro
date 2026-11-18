@@ -1,7 +1,14 @@
 <?php
+require_once 'config/Api.php';
+
 class Api
 {
-    private $baseUrl = 'http://192.168.1.91:5000/api/';
+    private $baseUrl;
+
+    public function __construct()
+    {
+        $this->baseUrl = ApiConfig::baseUrl();
+    }
 
     private function get($endpoint)
     {

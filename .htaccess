@@ -1,0 +1,4 @@
+# Bloquear o acesso pelo browser aos ficheiros .env
+<FilesMatch "^\.env">
+    Require all denied
+</FilesMatch>
