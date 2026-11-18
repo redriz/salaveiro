@@ -46,7 +46,6 @@ $erroApi = '<div class="alert alert-danger mb-0"><i class="bi bi-exclamation-tri
 
 <div class="row g-3 mt-1">
 
-    <!-- Meteorologia -->
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white fw-semibold"><i class="bi bi-cloud-sun"></i> Meteorologia</div>
@@ -69,7 +68,6 @@ $erroApi = '<div class="alert alert-danger mb-0"><i class="bi bi-exclamation-tri
         </div>
     </div>
 
-    <!-- Preço de referência -->
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white fw-semibold d-flex justify-content-between">
@@ -103,7 +101,6 @@ $erroApi = '<div class="alert alert-danger mb-0"><i class="bi bi-exclamation-tri
         </div>
     </div>
 
-    <!-- Alertas -->
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white fw-semibold d-flex justify-content-between">
