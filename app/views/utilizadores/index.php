@@ -116,4 +116,4 @@ require 'app/views/layout/header.php';
     </div>
 </div>
 
-<? require 'app/views/layout/header.php'; ?>
+<? require 'app/views/layout/footer.php'; ?>
