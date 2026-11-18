@@ -19,7 +19,11 @@ switch ($page) {
         require_once 'app/controllers/UtilizadorController.php';
         $controller = new UtilizadorController();
         break;
-        // producao, comercial externos
+    case 'trabalhadores':
+        require_once 'app/controllers/TrabalhadorController.php';
+        $controller = new TrabalhadorController();
+        break;
+    // producao, comercial externos
     case 'dashboard':
     default:
         require_once 'app/controllers/DashboardController.php';

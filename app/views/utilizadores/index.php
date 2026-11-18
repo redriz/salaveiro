@@ -3,12 +3,7 @@ $titulo = 'Gestão de Dados Principais';
 require 'app/views/layout/header.php';
 ?>
 
-<ul class="nav nav-tabs mb-4">
-    <li class="nav-item"><a class="nav-link active" href="index.php?page=utilizadores">Utilizadores</a></li>
-    <li class="nav-item"><a class="nav-link" href="index.php?page=trabalhadores">Trabalhadores</a></li>
-    <li class="nav-item"><a class="nav-link" href="index.php?page=salinas">Salinas e Tanques</a></li>
-    <li class="nav-item"><a class="nav-link" href="index.php?page=categorias">Categorias e Produtos</a></li>
-</ul>
+<?php require 'app/views/layout/tab_dados.php'; ?>
 
 <div class="row g-4">
     <div class="col-lg-8">
