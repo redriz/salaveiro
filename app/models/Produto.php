@@ -88,4 +88,10 @@ class Produto
     {
         return $this->conn->query("SELECT id_categoria, nome FROM categorias_produto ORDER BY nome")->fetchAll();
     }
+
+    public function adicionarStock($id, $quantidade)
+    {
+        $stmt = $this->conn->prepare("UPDATE produtos SET stock_unidades = stock_unidades + :q WHERE id_produto = :id");
+        return $stmt->execute([':q' => $quantidade, ':id' => $id]);
+    }
 }
