@@ -356,11 +356,11 @@ VALUES
 INSERT INTO utilizadores
 (id_perfil, id_trabalhador, nome, username, email, palavra_passe, estado, ultimo_acesso)
 VALUES
-(1, 5, 'Eduardo Martins', 'admin', 'admin@salaveiro.pt', 'admin123', 'Ativo', '2027-11-01 08:00:00'),
-(2, 3, 'Carlos Rocha', 'operador1', 'operador1@salaveiro.pt', 'operador123', 'Ativo', '2027-11-01 08:15:00'),
-(2, 2, 'Beatriz Almeida', 'operador2', 'operador2@salaveiro.pt', 'operador123', 'Ativo', NULL),
-(3, NULL, 'Consultor Comercial', 'consultor1', 'consultor1@salaveiro.pt', 'consultor123', 'Ativo', NULL),
-(3, NULL, 'Consultora Externa', 'consultor2', 'consultor2@salaveiro.pt', 'consultor123', 'Inativo', NULL);
+(1, 5, 'Eduardo Martins', 'admin', 'admin@salaveiro.pt', '$2y$12$T9phMS/OxYozUawXOnkKP.P0sCpzaGrYvALAzaZbxJjwJVufJ2S1W', 'Ativo', '2027-11-01 08:00:00'),
+(2, 3, 'Carlos Rocha', 'operador1', 'operador1@salaveiro.pt', '$2y$12$T9phMS/OxYozUawXOnkKP.P0sCpzaGrYvALAzaZbxJjwJVufJ2S1W', 'Ativo', '2027-11-01 08:15:00'),
+(2, 2, 'Beatriz Almeida', 'operador2', 'operador2@salaveiro.pt', '$2y$12$T9phMS/OxYozUawXOnkKP.P0sCpzaGrYvALAzaZbxJjwJVufJ2S1W', 'Ativo', NULL),
+(3, NULL, 'Consultor Comercial', 'consultor1', 'consultor1@salaveiro.pt', '$2y$12$T9phMS/OxYozUawXOnkKP.P0sCpzaGrYvALAzaZbxJjwJVufJ2S1W', 'Ativo', NULL),
+(3, NULL, 'Consultora Externa', 'consultor2', 'consultor2@salaveiro.pt', '$2y$12$T9phMS/OxYozUawXOnkKP.P0sCpzaGrYvALAzaZbxJjwJVufJ2S1W', 'Inativo', NULL);
 
 INSERT INTO tanques
 (id_salina, codigo, area_m2, capacidade_maxima_kg, estado)
