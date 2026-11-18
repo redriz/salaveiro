@@ -4,7 +4,7 @@ session_start();
 $page = $_GET['page'] ?? 'dashboard';
 $action = $_GET['action'] ?? 'index';
 
-if (!isset($_SESSION['user_id']) && $page !== 'login') {
+if (!isset($_SESSION['user_id']) && $page !== 'auth') {
     header('Location: index.php?page=auth&action=login');
     exit;
 }
