@@ -43,6 +43,10 @@ switch ($page) {
         require_once 'app/controllers/ProducaoController.php';
         $controller = new ProducaoController();
         break;
+    case 'clientes':
+        require_once 'app/controllers/ClienteController.php';
+        $controller = new ClienteController();
+        break;
     // comercial externos
     case 'dashboard':
     default:

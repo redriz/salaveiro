@@ -4,6 +4,10 @@ if (in_array($current, ['utilizadores', 'trabalhadores', 'salinas', 'tanques', '
     $current = 'dados';
 }
 
+if (in_array($current, ['encomendas', 'clientes', 'stock'])) {
+    $current = 'comercial';
+}
+
 $menu = [
     'dashboard' => ['Dashboard', 'bi-speedometer2'],
     'dados'     => ['Dados Principais', 'bi-database'],
