@@ -1,5 +1,8 @@
 <?php
 $current = $_GET['page'] ?? 'dashboard';
+if (in_array($current, ['utilizadores', 'trabalhadores', 'salinas', 'tanques', 'categorias', 'produtos'])) {
+    $current = 'dados';
+}
 
 $menu = [
     'dashboard' => ['Dashboard', 'bi-speedometer2'],

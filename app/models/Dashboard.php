@@ -11,18 +11,17 @@ class Dashboard
         $this->conn = $database->connect();
     }
 
-    public function reservasAtivas()
+    public function totais() 
     {
-        return $this->conn->query("SELECT COUNT(*) FROM booking WHERE status <> 'cancelada'")->fetchColumn();
-    }
+        $query = "SELECT
+        (SELECT COUNT(*) FROM salinas) AS salinas,
+        (SELECT COUNT(*) FROM trabalhadores) AS trabalhadores,
+        (SELECT COUNT(*) FROM colheitas) AS colheitas,
+        (SELECT COALESCE(SUM(stock_unidades), 0) FROM produtos) AS qtd_produtos,
+        (SELECT COUNT(*) FROM produtos) AS produtos,
+        (SELECT COUNT(*) FROM clientes) AS clientes,
+        (SELECT COUNT(*) FROM encomendas) AS encomendas";
 
-    public function totalPassageiros()
-    {
-        return $this->conn->query("SELECT SUM(passengers) FROM booking WHERE status <> 'cancelada'")->fetchColumn();
-    }
-
-    public function barcosDisponiveis()
-    {
-        return $this->conn->query("SELECT COUNT(*) FROM boat WHERE is_available = 1")->fetchColumn();
+    return $this->conn->query($query)->fetch();
     }
 }

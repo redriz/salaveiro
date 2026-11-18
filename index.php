@@ -14,7 +14,12 @@ switch ($page) {
         require_once 'app/controllers/AuthController.php';
         $controller = new AuthController();
         break;
-        // dados, producao, comercial externos
+    case 'dados':
+    case 'utilizadores':
+        require_once 'app/controllers/UtilizadorController.php';
+        $controller = new UtilizadorController();
+        break;
+        // producao, comercial externos
     case 'dashboard':
     default:
         require_once 'app/controllers/DashboardController.php';

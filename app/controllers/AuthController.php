@@ -29,6 +29,8 @@ class AuthController
                 $_SESSION['user_id'] = $user['id_utilizador'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['perfil'] = $user['perfil'];
+                $_SESSION['nome'] = $user['nome'];
+                $_SESSION['ultimo_acesso'] = $user['ultimo_acesso'];
                 $this->utilizadorModel->updateUltimoAcesso($user['id_utilizador']);
                 header('Location: index.php?page=dashboard&action=index');
                 exit;
