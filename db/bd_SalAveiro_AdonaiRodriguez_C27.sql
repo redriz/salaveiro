@@ -4,7 +4,7 @@
 -- Nome sugerido: bdSalAveiro_NomeConcorrente_C27
 -- ============================================================
 
-DROP DATABASE IF EXISTS bdSalAveiro_NomeConcorrente_C27;
+DROP DATABASE IF EXISTS bdSalAveiro_AdonaiRodriguez_C27;
 
 CREATE DATABASE bdSalAveiro_AdonaiRodriguez_C27
   CHARACTER SET utf8mb4
