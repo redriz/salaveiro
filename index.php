@@ -47,7 +47,12 @@ switch ($page) {
         require_once 'app/controllers/ClienteController.php';
         $controller = new ClienteController();
         break;
-    // comercial externos
+    case 'comercial':
+    case 'encomendas':
+        require_once 'app/controllers/EncomendaController.php';
+        $controller = new EncomendaController();
+        break;
+    // externos
     case 'dashboard':
     default:
         require_once 'app/controllers/DashboardController.php';

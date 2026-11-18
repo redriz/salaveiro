@@ -47,12 +47,12 @@ class Cliente
                   VALUES (:nome, :nif, :telefone, :email, :morada, :estado)";
         $stmt = $this->conn->prepare($query);
         return $stmt->execute([
-            ':nome'     => $c['nome'],
-            ':nif'      => $c['nif'],
+            ':nome' => $c['nome'],
+            ':nif' => $c['nif'],
             ':telefone' => $c['telefone'],
-            ':email'    => $c['email'],
-            ':morada'   => $c['morada'],
-            ':estado'   => $c['estado']
+            ':email' => $c['email'],
+            ':morada' => $c['morada'],
+            ':estado' => $c['estado']
         ]);
     }
 
@@ -63,13 +63,13 @@ class Cliente
                   WHERE id_cliente = :id";
         $stmt = $this->conn->prepare($query);
         return $stmt->execute([
-            ':nome'     => $c['nome'],
-            ':nif'      => $c['nif'],
+            ':nome' => $c['nome'],
+            ':nif' => $c['nif'],
             ':telefone' => $c['telefone'],
-            ':email'    => $c['email'],
-            ':morada'   => $c['morada'],
-            ':estado'   => $c['estado'],
-            ':id'       => $id
+            ':email' => $c['email'],
+            ':morada' => $c['morada'],
+            ':estado' => $c['estado'],
+            ':id' => $id
         ]);
     }
 

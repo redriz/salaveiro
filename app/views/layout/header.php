@@ -28,6 +28,12 @@ $corEstado = [
     'Inativo' => 'secondary',
     'Inativa' => 'secondary',
     'Manutenção' => 'warning',
+    'Pendente' => 'warning',
+    'Confirmada' => 'secondary',
+    'Em preparação' => 'info',
+    'Expedida' => 'primary',
+    'Concluída' => 'success',
+    'Cancelada' => 'danger'
 ];
 
 ?>
