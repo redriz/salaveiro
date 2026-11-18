@@ -55,7 +55,7 @@ require 'app/views/layout/header.php';
                             <td><span class="badge text-bg-<?= $u['estado'] === 'Ativo' ? 'success' : 'danger' ?>"><?= $u['estado'] ?></span></td>
                             <td class="text-nowrap">
                                 <a href="index.php?page=utilizadores&id=<?= $u['id_utilizador'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
-                                <form method="post" action="index.php?page=utilizadores&action=delete">
+                                <form method="post" action="index.php?page=utilizadores&action=delete" class="d-inline">
                                     <input type="hidden" name="id" value="<?= $u['id_utilizador'] ?>">
                                     <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar este utilizador?')"><i class="bi bi-trash"></i></button>
                                 </form>
@@ -80,30 +80,47 @@ require 'app/views/layout/header.php';
                     <div class="invalid-feedback"><?= $erros['nome'] ?? '' ?></div>
                 </div>
                 <div class="mb-3">
-                    <label for="nome" class="form-label">Username *</label>
-                    <input type="text" id="username" name="username" class="form-control <?= isset($erros['nome']) ? 'is-invalid' : '' ?>"
+                    <label for="username" class="form-label">Username *</label>
+                    <input type="text" id="username" name="username" class="form-control <?= isset($erros['username']) ? 'is-invalid' : '' ?>"
                         value="<?= htmlspecialchars($utilizador['username']) ?>">
                     <div class="invalid-feedback"><?= $erros['username'] ?? '' ?></div>
                 </div>
                 <div class="mb-3">
-                    <label for="nome" class="form-label">Email *</label>
-                    <input type="email" id="email" name="email" class="form-control <?= isset($erros['nome']) ? 'is-invalid' : '' ?>"
+                    <label for="email" class="form-label">Email *</label>
+                    <input type="email" id="email" name="email" class="form-control <?= isset($erros['email']) ? 'is-invalid' : '' ?>"
                         value="<?= htmlspecialchars($utilizador['email']) ?>">
                     <div class="invalid-feedback"><?= $erros['email'] ?? '' ?></div>
                 </div>
                 <div class="mb-3">
-                    <label for="nome" class="form-label">Palavra-passe *</label>
+                    <label for="palavra_passe" class="form-label">Palavra-passe *</label>
                     <input type="password" id="palavra_passe" name="palavra_passe" class="form-control <?= isset($erros['palavra_passe']) ? 'is-invalid' : '' ?>"
                         placeholder="<?= $utilizador['id_utilizador'] ? 'Deixar vazio para manter' : 'Mínimo 8 caracteres' ?>">
+                    <div class="invalid-feedback"><?= $erros['palavra_passe'] ?? '' ?></div>
                 </div>
-                <select id="id_trabalhador" name="id_trabalhador" class="form-select">
-                    <option value="">— Nenhum —</option>
-                    <?php foreach ($trabalhadores as $t): ?>
-                        <option value="<?= $t['id_trabalhador'] ?>" <?= $t['id_trabalhador'] == $utilizador['id_trabalhador'] ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($t['nome']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+                <div class="mb-3">
+                    <label for="id_trabalhador" class="form-label">Trabalhador</label>
+                    <select id="id_trabalhador" name="id_trabalhador" class="form-select">
+                        <option value="">— Nenhum —</option>
+                        <?php foreach ($trabalhadores as $t): ?>
+                            <option value="<?= $t['id_trabalhador'] ?>" <?= $t['id_trabalhador'] == $utilizador['id_trabalhador'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($t['nome']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="id_perfil" class="form-label">Perfil *</label>
+                    <select id="id_perfil" name="id_perfil" class="form-select <?= isset($erros['id_perfil']) ? 'is-invalid' : '' ?>">
+                        <option value="">Selecione...</option>
+                        <?php foreach ($perfis as $p): ?>
+                            <option value="<?= $p['id_perfil'] ?>" <?= $p['id_perfil'] == $utilizador['id_perfil'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($p['nome']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <div class="invalid-feedback"><?= $erros['id_perfil'] ?? '' ?></div>
+                </div>
+
                 <div class="form-check form-switch mb-3">
                     <input class="form-check-input" type="checkbox" id="estado" name="estado" <?= $utilizador['estado'] === 'Ativo' ? 'checked' : '' ?>>
                     <label class="form-check-label" for="estado">Ativo</label>
@@ -116,4 +133,4 @@ require 'app/views/layout/header.php';
     </div>
 </div>
 
-<? require 'app/views/layout/footer.php'; ?>
+<?php require 'app/views/layout/footer.php'; ?>
