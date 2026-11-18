@@ -23,6 +23,10 @@ switch ($page) {
         require_once 'app/controllers/TrabalhadorController.php';
         $controller = new TrabalhadorController();
         break;
+    case 'salinas':
+        require_once 'app/controllers/SalinaController.php';
+        $controller = new SalinaController();
+        break;
     // producao, comercial externos
     case 'dashboard':
     default:

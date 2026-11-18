@@ -5,10 +5,13 @@ $tabs = [
     'salinas'       => 'Salinas e Tanques',
     'categorias'    => 'Categorias e Produtos',
 ];
+
 $tabAtual = $_GET['page'] ?? 'utilizadores';
-if ($tabAtual === 'dados') {
-    $tabAtual = 'utilizadores';
-}
+
+if ($tabAtual === 'dados') $tabAtual = 'utilizadores';
+if ($tabAtual === 'tanques')  $tabAtual = 'salinas';
+if ($tabAtual === 'produtos') $tabAtual = 'categorias';
+
 ?>
 <ul class="nav nav-tabs mb-4">
     <?php foreach ($tabs as $key => $label): ?>

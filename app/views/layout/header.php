@@ -17,10 +17,20 @@ $corPerfil = [
     'Operador'        => 'info',
     'Consultor'      => 'secondary',
 ];
+
+$corEstado = [
+    'Ativo' => 'success',
+    'Ativa' => 'success',
+    'Inativo' => 'secondary',
+    'Inativa' => 'secondary',
+    'Manutenção' => 'warning',
+];
+
 ?>
 
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
