@@ -31,6 +31,14 @@ switch ($page) {
         require_once 'app/controllers/TanqueController.php';
         $controller = new TanqueController();
         break;
+    case 'categorias':
+        require_once 'app/controllers/CategoriaController.php';
+        $controller = new CategoriaController();
+        break;
+    case 'produtos':
+        require_once 'app/controllers/ProdutoController.php';
+        $controller = new ProdutoController();
+        break;
     // producao, comercial externos
     case 'dashboard':
     default:
