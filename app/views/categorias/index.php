@@ -11,7 +11,7 @@ require 'app/views/layout/header.php';
 </div>
 
 <div class="row g-4">
-    <div class="col-lg-8">
+    <div class="<?= $podeGerir ? 'col-lg-8' : 'col-12' ?>">
         <div class="card border-0 shadow-sm">
             <form method="get" class="card-body d-flex flex-wrap gap-2">
                 <input type="hidden" name="page" value="categorias">
@@ -19,7 +19,9 @@ require 'app/views/layout/header.php';
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
                     <input type="text" name="search" class="form-control" placeholder="Pesquisar..." value="<?= htmlspecialchars($search) ?>">
                 </div>
-                <a href="index.php?page=categorias" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Nova categoria</a>
+                <?php if ($podeGerir): ?>
+                    <a href="index.php?page=categorias" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Nova categoria</a>
+                <?php endif; ?>
             </form>
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
@@ -28,7 +30,7 @@ require 'app/views/layout/header.php';
                         <th>Nome</th>
                         <th>Descrição</th>
                         <th class="text-end">Produtos</th>
-                        <th>Ações</th>
+                        <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,6 +46,7 @@ require 'app/views/layout/header.php';
                             <td><?= htmlspecialchars($c['nome']) ?></td>
                             <td class="text-muted small"><?= htmlspecialchars($c['descricao'] ?? '—') ?></td>
                             <td class="text-end"><?= $c['total_produtos'] ?></td>
+                            <?php if ($podeGerir): ?>
                             <td class="text-nowrap">
                                 <a href="index.php?page=categorias&id=<?= $c['id_categoria'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
                                 <form method="post" action="index.php?page=categorias&action=delete" class="d-inline">
@@ -51,6 +54,7 @@ require 'app/views/layout/header.php';
                                     <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar esta categoria?')"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -58,6 +62,7 @@ require 'app/views/layout/header.php';
             <div class="card-footer bg-white text-muted small">A mostrar <?= count($categorias) ?> registos</div>
         </div>
     </div>
+    <?php if ($podeGerir): ?>
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white fw-semibold">
@@ -80,6 +85,7 @@ require 'app/views/layout/header.php';
             </form>
         </div>
     </div>
+    <?php endif; ?>
 </div>
 
 <?php require 'app/views/layout/footer.php'; ?>

@@ -11,7 +11,7 @@ require 'app/views/layout/header.php';
 </div>
 
 <div class="row g-4">
-    <div class="col-lg-8">
+    <div class="<?= $podeGerir ? 'col-lg-8' : 'col-12' ?>">
         <div class="card border-0 shadow-sm">
             <form method="get" class="card-body d-flex flex-wrap gap-2">
                 <input type="hidden" name="page" value="tanques">
@@ -25,7 +25,9 @@ require 'app/views/layout/header.php';
                         <option <?= $estado === $e ? 'selected' : '' ?>><?= $e ?></option>
                     <?php endforeach; ?>
                 </select>
-                <a href="index.php?page=tanques" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Novo tanque</a>
+                <?php if ($podeGerir): ?>
+                    <a href="index.php?page=tanques" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Novo tanque</a>
+                <?php endif; ?>
             </form>
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
@@ -36,7 +38,7 @@ require 'app/views/layout/header.php';
                         <th class="text-end">Área (m²)</th>
                         <th class="text-end">Capacidade (kg)</th>
                         <th>Estado</th>
-                        <th>Ações</th>
+                        <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +56,7 @@ require 'app/views/layout/header.php';
                             <td class="text-end"><?= number_format($t['area_m2'], 2, ',', ' ') ?></td>
                             <td class="text-end"><?= number_format($t['capacidade_maxima_kg'], 2, ',', ' ') ?></td>
                             <td><span class="badge text-bg-<?= $corEstado[$t['estado']] ?>"><?= $t['estado'] ?></span></td>
+                            <?php if ($podeGerir): ?>
                             <td class="text-nowrap">
                                 <a href="index.php?page=tanques&id=<?= $t['id_tanque'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
                                 <form method="post" action="index.php?page=tanques&action=delete" class="d-inline">
@@ -61,6 +64,7 @@ require 'app/views/layout/header.php';
                                     <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar este tanque?')"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -68,6 +72,7 @@ require 'app/views/layout/header.php';
             <div class="card-footer bg-white text-muted small">A mostrar <?= count($tanques) ?> registos</div>
         </div>
     </div>
+    <?php if ($podeGerir): ?>
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white fw-semibold">
@@ -118,6 +123,7 @@ require 'app/views/layout/header.php';
             </form>
         </div>
     </div>
+    <?php endif; ?>
 </div>
 
 <?php require 'app/views/layout/footer.php'; ?>

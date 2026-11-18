@@ -28,7 +28,7 @@ $resumo = [
 </div>
 
 <div class="row g-4">
-    <div class="col-lg-8">
+    <div class="<?= $podeGerir ? 'col-lg-8' : 'col-12' ?>">
         <div class="card border-0 shadow-sm">
             <form method="get" class="card-body d-flex gap-2">
                 <input type="hidden" name="page" value="stock">
@@ -84,6 +84,7 @@ $resumo = [
         </div>
     </div>
 
+    <?php if ($podeGerir): ?>
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white fw-semibold">Entrada de stock</div>
@@ -105,6 +106,7 @@ $resumo = [
             </form>
         </div>
     </div>
+    <?php endif; ?>
 </div>
 
 <?php require 'app/views/layout/footer.php'; ?>

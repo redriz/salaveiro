@@ -6,7 +6,7 @@ require 'app/views/layout/header.php';
 <?php require 'app/views/layout/tab_comercial.php'; ?>
 
 <div class="row g-4">
-    <div class="col-lg-8">
+    <div class="<?= $podeGerir ? 'col-lg-8' : 'col-12' ?>">
         <div class="card border-0 shadow-sm">
             <form method="get" class="card-body d-flex flex-wrap gap-2">
                 <input type="hidden" name="page" value="clientes">
@@ -20,7 +20,9 @@ require 'app/views/layout/header.php';
                         <option <?= $estado === $e ? 'selected' : '' ?>><?= $e ?></option>
                     <?php endforeach; ?>
                 </select>
-                <a href="index.php?page=clientes" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Novo cliente</a>
+                <?php if ($podeGerir): ?>
+                    <a href="index.php?page=clientes" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Novo cliente</a>
+                <?php endif; ?>
             </form>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
@@ -32,7 +34,7 @@ require 'app/views/layout/header.php';
                             <th>Telefone</th>
                             <th>Morada</th>
                             <th>Estado</th>
-                            <th>Ações</th>
+                            <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +55,7 @@ require 'app/views/layout/header.php';
                                 <td><?= htmlspecialchars($c['telefone']) ?></td>
                                 <td><?= htmlspecialchars($c['morada']) ?></td>
                                 <td><span class="badge text-bg-<?= $corEstado[$c['estado']] ?>"><?= $c['estado'] ?></span></td>
+                                <?php if ($podeGerir): ?>
                                 <td class="text-nowrap">
                                     <a href="index.php?page=clientes&id=<?= $c['id_cliente'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
                                     <form method="post" action="index.php?page=clientes&action=delete" class="d-inline">
@@ -60,6 +63,7 @@ require 'app/views/layout/header.php';
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar este cliente?')"><i class="bi bi-trash"></i></button>
                                     </form>
                                 </td>
+                                <?php endif; ?>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -69,6 +73,7 @@ require 'app/views/layout/header.php';
         </div>
     </div>
 
+    <?php if ($podeGerir): ?>
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white fw-semibold">
@@ -117,6 +122,7 @@ require 'app/views/layout/header.php';
             </form>
         </div>
     </div>
+    <?php endif; ?>
 </div>
 
 <?php require 'app/views/layout/footer.php'; ?>

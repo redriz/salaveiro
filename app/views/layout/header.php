@@ -8,6 +8,8 @@ if (in_array($current, ['encomendas', 'clientes', 'stock'])) {
     $current = 'comercial';
 }
 
+$podeGerir = podeGerir($_GET['page'] ?? 'dashboard');
+
 $menu = [
     'dashboard' => ['Dashboard', 'bi-speedometer2'],
     'dados'     => ['Dados Principais', 'bi-database'],
@@ -69,7 +71,12 @@ $corEstado = [
         </aside>
         <div class="flex-grow-1 bg-light">
             <header class="topbar d-flex justify-content-between align-items-center">
-                <h5 class="m-0"><?= $titulo ?? 'SalAveiro' ?></h5>
+                <h5 class="m-0">
+                    <?= $titulo ?? 'SalAveiro' ?>
+                    <?php if (!$podeGerir && !in_array($current, ['dashboard', 'externos'])): ?>
+                        <span class="badge text-bg-light border fw-normal ms-2"><i class="bi bi-eye"></i> Só consulta</span>
+                    <?php endif; ?>
+                </h5>
                 <div>
                     <i class="bi bi-person-circle"></i> <?= htmlspecialchars($_SESSION['username']) ?>
                     <span class="badge text-bg-<?= $corPerfil[$_SESSION['perfil']] ?? 'secondary' ?>"><?= $_SESSION['perfil'] ?></span>

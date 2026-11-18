@@ -6,7 +6,7 @@ require 'app/views/layout/header.php';
 <?php require 'app/views/layout/tab_dados.php'; ?>
 
 <div class="row g-4">
-    <div class="col-lg-8">
+    <div class="<?= $podeGerir ? 'col-lg-8' : 'col-12' ?>">
         <div class="card border-0 shadow-sm">
             <form method="get" class="card-body d-flex flex-wrap gap-2">
                 <input type="hidden" name="page" value="trabalhadores">
@@ -19,7 +19,9 @@ require 'app/views/layout/header.php';
                     <option value="Ativo" <?= $estado === 'Ativo' ? 'selected' : '' ?>>Ativo</option>
                     <option value="Inativo" <?= $estado === 'Inativo' ? 'selected' : '' ?>>Inativo</option>
                 </select>
-                <a href="index.php?page=trabalhadores" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Novo trabalhador</a>
+                <?php if ($podeGerir): ?>
+                    <a href="index.php?page=trabalhadores" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Novo trabalhador</a>
+                <?php endif; ?>
             </form>
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
@@ -30,7 +32,7 @@ require 'app/views/layout/header.php';
                         <th>Salina</th>
                         <th>Telefone</th>
                         <th>Estado</th>
-                        <th>Ações</th>
+                        <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,6 +50,7 @@ require 'app/views/layout/header.php';
                             <td><?= htmlspecialchars($t['salina'] ?? '—') ?></td>
                             <td><?= htmlspecialchars($t['telefone'] ?? '—') ?></td>
                             <td><span class="badge text-bg-<?= $t['estado'] === 'Ativo' ? 'success' : 'danger' ?>"><?= $t['estado'] ?></span></td>
+                            <?php if ($podeGerir): ?>
                             <td class="text-nowrap">
                                 <a href="index.php?page=trabalhadores&id=<?= $t['id_trabalhador'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
                                 <form method="post" action="index.php?page=trabalhadores&action=delete" class="d-inline">
@@ -55,6 +58,7 @@ require 'app/views/layout/header.php';
                                     <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar este trabalhador?')"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -62,6 +66,7 @@ require 'app/views/layout/header.php';
             <div class="card-footer bg-white text-muted small">A mostrar <?= count($trabalhadores) ?> registos</div>
         </div>
     </div>
+    <?php if ($podeGerir): ?>
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white fw-semibold">
@@ -125,6 +130,7 @@ require 'app/views/layout/header.php';
             </form>
         </div>
     </div>
+    <?php endif; ?>
 </div>
 
 <?php require 'app/views/layout/footer.php'; ?>

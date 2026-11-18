@@ -13,6 +13,7 @@ $totalKg = array_sum(array_column($colheitas, 'quantidade_kg'));
 <div class="row g-4">
 
     <!-- Formulário -->
+    <?php if ($podeGerir): ?>
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white fw-semibold">
@@ -83,8 +84,9 @@ $totalKg = array_sum(array_column($colheitas, 'quantidade_kg'));
             </form>
         </div>
     </div>
+    <?php endif; ?>
 
-    <div class="col-lg-8">
+    <div class="<?= $podeGerir ? 'col-lg-8' : 'col-12' ?>">
 
         <!-- Estado dos tanques -->
         <div class="card border-0 shadow-sm mb-4">
@@ -123,7 +125,7 @@ $totalKg = array_sum(array_column($colheitas, 'quantidade_kg'));
                             <th>Tanque</th>
                             <th>Trabalhador</th>
                             <th class="text-end">Kg</th>
-                            <th>Ações</th>
+                            <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,6 +142,7 @@ $totalKg = array_sum(array_column($colheitas, 'quantidade_kg'));
                                 <td><?= htmlspecialchars($c['tanque']) ?></td>
                                 <td><?= htmlspecialchars($c['trabalhador']) ?></td>
                                 <td class="text-end"><?= number_format($c['quantidade_kg'], 2, ',', ' ') ?></td>
+                                <?php if ($podeGerir): ?>
                                 <td class="text-nowrap">
                                     <a href="index.php?page=producao&id=<?= $c['id_colheita'] ?>&salina=<?= $idSalina ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
                                     <form method="post" action="index.php?page=producao&action=delete" class="d-inline">
@@ -147,6 +150,7 @@ $totalKg = array_sum(array_column($colheitas, 'quantidade_kg'));
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar este registo?')"><i class="bi bi-trash"></i></button>
                                     </form>
                                 </td>
+                                <?php endif; ?>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

@@ -38,7 +38,9 @@ $podeAlterar = $encomenda && !in_array($encomenda['estado'], ['Concluída', 'Can
                         <option <?= $estado === $e ? 'selected' : '' ?>><?= $e ?></option>
                     <?php endforeach; ?>
                 </select>
-                <a href="index.php?page=encomendas" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Nova encomenda</a>
+                <?php if ($podeGerir): ?>
+                    <a href="index.php?page=encomendas" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Nova encomenda</a>
+                <?php endif; ?>
             </form>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
@@ -136,7 +138,7 @@ $podeAlterar = $encomenda && !in_array($encomenda['estado'], ['Concluída', 'Can
                         </tfoot>
                     </table>
 
-                    <?php if ($encomenda['estado'] === 'Pendente'): ?>
+                    <?php if ($encomenda['estado'] === 'Pendente' && $podeGerir): ?>
                         <!-- Adicionar produto -->
                         <form method="post" action="index.php?page=encomendas&action=adicionarItem" class="d-flex gap-2 mb-3">
                             <input type="hidden" name="id" value="<?= $encomenda['id_encomenda'] ?>">
@@ -151,7 +153,7 @@ $podeAlterar = $encomenda && !in_array($encomenda['estado'], ['Concluída', 'Can
                         </form>
                     <?php endif; ?>
 
-                    <?php if ($podeAlterar): ?>
+                    <?php if ($podeAlterar && $podeGerir): ?>
                         <!-- Alterar estado -->
                         <form method="post" action="index.php?page=encomendas&action=estado" class="mb-2">
                             <input type="hidden" name="id" value="<?= $encomenda['id_encomenda'] ?>">
@@ -172,9 +174,18 @@ $podeAlterar = $encomenda && !in_array($encomenda['estado'], ['Concluída', 'Can
                             <input type="hidden" name="id" value="<?= $encomenda['id_encomenda'] ?>">
                             <button class="btn btn-outline-danger w-100"><i class="bi bi-x-circle"></i> Cancelar encomenda</button>
                         </form>
-                    <?php else: ?>
+                    <?php elseif (!$podeAlterar): ?>
                         <div class="alert alert-secondary small mb-0">Encomenda <?= mb_strtolower($encomenda['estado']) ?>: já não pode ser alterada.</div>
                     <?php endif; ?>
+                </div>
+            </div>
+
+        <?php elseif (!$podeGerir): ?>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-muted text-center py-5">
+                    <i class="bi bi-eye fs-2 d-block mb-2"></i>
+                    Selecione uma encomenda para ver o detalhe.
                 </div>
             </div>
 

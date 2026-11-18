@@ -9,6 +9,17 @@ if (!isset($_SESSION['user_id']) && $page !== 'auth') {
     exit;
 }
 
+require_once 'app/helpers/permissoes.php';
+
+// qualquer escrita (POST ou ação que não seja "index") exige permissão
+$escrita = $action !== 'index' || $_SERVER['REQUEST_METHOD'] === 'POST';
+
+if ($page !== 'auth' && $escrita && !podeGerir($page)) {
+    $_SESSION['msg'] = ['tipo' => 'danger', 'texto' => 'Não tem permissão para realizar esta ação.'];
+    header('Location: index.php?page=' . urlencode($page));
+    exit;
+}
+
 switch ($page) {
     case 'auth':
         require_once 'app/controllers/AuthController.php';
