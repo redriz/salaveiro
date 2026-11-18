@@ -56,8 +56,10 @@ switch ($page) {
         require_once 'app/controllers/StockController.php';
         $controller = new StockController();
         break;
-
-    // externos
+    case 'externos':
+        require_once 'app/controllers/ExternosController.php';
+        $controller = new ExternosController();
+        break;
     case 'dashboard':
     default:
         require_once 'app/controllers/DashboardController.php';

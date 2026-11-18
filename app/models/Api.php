@@ -49,4 +49,23 @@ class Api
         }
         return $ativos;
     }
+
+    public function consultar($endpoint)
+    {
+        $ch = curl_init($this->baseUrl . $endpoint);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+
+        $json = curl_exec($ch);
+
+        if ($json === false) {
+            return null;
+        }
+
+        return [
+            'status' => curl_getinfo($ch, CURLINFO_HTTP_CODE),
+            'tempo' => round(curl_getinfo($ch, CURLINFO_TOTAL_TIME) * 1000),
+            'dados' => json_decode($json, true),
+        ];
+    }
 }
