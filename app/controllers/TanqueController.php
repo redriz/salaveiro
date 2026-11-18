@@ -29,7 +29,7 @@ class TanqueController
         if (!empty($_GET['id'])) {
             $tanque = $this->tanqueModel->getById($_GET['id']);
             if (!$tanque) {
-                $_SESSION['msg'] = ['tipo' => 'warning', 'texto' => 'Salina não encontrado.'];
+                $_SESSION['msg'] = ['tipo' => 'warning', 'texto' => 'Tanque não encontrado.'];
                 header('Location: index.php?page=tanques');
                 exit;
             }
@@ -44,6 +44,9 @@ class TanqueController
 
             if (!is_numeric($tanque['area_m2']) || $tanque['area_m2'] <= 0) {
                 $erros['area_m2'] = 'A área deve ser superior a 0.';
+            }
+            if (!is_numeric($tanque['capacidade_maxima_kg']) || $tanque['capacidade_maxima_kg'] <= 0) {
+                $erros['capacidade_maxima_kg'] = 'A capacidade deve ser superior a 0.';
             }
             if ($tanque['codigo'] === '') {
                 $erros['codigo'] = 'O código é obrigatório.';
