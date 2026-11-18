@@ -46,7 +46,8 @@ class Utilizador
 
         $stmt = $this->conn->prepare($query);
         $search = "%$search%";
-        $stmt->bindParam(':search', $search);
+        $stmt->bindParam(':s1', $search);
+        $stmt->bindParam(':s2', $search);
         if ($estado !== '') {
             $stmt->bindParam(':estado', $estado);
         }
@@ -105,7 +106,7 @@ class Utilizador
 
     public function delete($id) 
     {
-        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+        $query = "DELETE FROM " . $this->table . " WHERE id_utilizador = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
@@ -118,6 +119,6 @@ class Utilizador
 
     public function getTrabalhadores() 
     {
-        return $this->conn->query("SELECT id_trabalhador, nome FROM perfis ORDER BY id_perfil")->fetchAll();
+        return $this->conn->query("SELECT id_trabalhador, nome FROM trabalhadores ORDER BY nome")->fetchAll();
     }
 }
