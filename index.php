@@ -11,8 +11,12 @@ if (!isset($_SESSION['user_id']) && $page !== 'auth') {
 
 require_once 'app/helpers/permissoes.php';
 
-// qualquer escrita (POST ou ação que não seja "index") exige permissão
-$escrita = $action !== 'index' || $_SERVER['REQUEST_METHOD'] === 'POST';
+// qualquer escrita (POST ou ação que não seja "index" ou "api") exige permissão
+$escrita = !in_array($action, ['index', 'api']) || $_SERVER['REQUEST_METHOD'] === 'POST';
+
+if ($action === 'api') {
+    session_write_close();
+}
 
 if ($page !== 'auth' && $escrita && !podeGerir($page)) {
     $_SESSION['msg'] = ['tipo' => 'danger', 'texto' => 'Não tem permissão para realizar esta ação.'];
