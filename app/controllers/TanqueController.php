@@ -66,7 +66,7 @@ class TanqueController
                     header('Location: index.php?page=tanques');
                     exit;
                 } catch (PDOException $e) {
-                    $erros['codigo'] = 'Já existe um tanque com esse código.';
+                    $erros['codigo'] = 'Já existe um tanque com esse código para esta salina.';
                 }
             }
         }
