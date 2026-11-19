@@ -3,12 +3,15 @@
 // Todos os perfis podem consultar todas as páginas.
 function podeGerir($pagina)
 {
+    if (($_SESSION['perfil'] ?? '') === 'Administrador') {
+        return true;
+    }
+
     // páginas com outro nome que abrem a mesma coisa
     $aliases = ['dados' => 'utilizadores', 'comercial' => 'encomendas'];
     $pagina = $aliases[$pagina] ?? $pagina;
 
     $permissoes = [
-        'Administrador' => ['utilizadores', 'trabalhadores', 'salinas', 'tanques', 'categorias', 'produtos'],
         'Operador'      => ['salinas', 'tanques', 'producao', 'encomendas', 'clientes', 'stock'],
         'Consultor'     => [],
     ];

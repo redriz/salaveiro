@@ -41,7 +41,7 @@ Todos os perfis podem consultar todas as páginas. Só podem criar, editar e apa
 
 | Perfil | Pode gerir |
 |---|---|
-| Administrador | Dados Principais (utilizadores, trabalhadores, salinas, tanques, categorias, produtos) |
+| Administrador | Todas as páginas |
 | Operador | Salinas e Tanques, Produção e Comercial |
 | Consultor | Nenhuma (só consulta) |
 
