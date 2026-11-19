@@ -6,7 +6,7 @@ require 'app/views/layout/header.php';
 <?php require 'app/views/layout/tab_comercial.php'; ?>
 
 <div class="row g-4">
-    <div class="<?= $podeGerir ? 'col-lg-8' : 'col-12' ?>">
+    <div class="col-lg-8">
         <div class="card border-0 shadow-sm">
             <form method="get" class="card-body d-flex flex-wrap gap-2">
                 <input type="hidden" name="page" value="clientes">
@@ -25,7 +25,7 @@ require 'app/views/layout/header.php';
                 <?php endif; ?>
             </form>
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0<?= $podeGerir ? ' table-acoes' : '' ?>">
+                <table class="table table-hover align-middle mb-0 table-acoes">
                     <thead class="table-light">
                         <tr>
                             <th>ID</th>
@@ -34,7 +34,7 @@ require 'app/views/layout/header.php';
                             <th>Telefone</th>
                             <th>Morada</th>
                             <th>Estado</th>
-                            <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,7 +45,7 @@ require 'app/views/layout/header.php';
                         <?php endif; ?>
 
                         <?php foreach ($clientes as $c): ?>
-                            <tr>
+                            <tr class="<?= $detalhe && $detalhe['id_cliente'] == $c['id_cliente'] ? 'table-active' : '' ?>">
                                 <td><?= $c['id_cliente'] ?></td>
                                 <td>
                                     <?= htmlspecialchars($c['nome']) ?>
@@ -55,15 +55,16 @@ require 'app/views/layout/header.php';
                                 <td><?= htmlspecialchars($c['telefone']) ?></td>
                                 <td><?= htmlspecialchars($c['morada']) ?></td>
                                 <td><span class="badge text-bg-<?= $corEstado[$c['estado']] ?>"><?= $c['estado'] ?></span></td>
-                                <?php if ($podeGerir): ?>
                                 <td class="text-nowrap">
+                                    <a href="index.php?page=clientes&ver=<?= $c['id_cliente'] ?>&search=<?= urlencode($search) ?>&estado=<?= urlencode($estado) ?>" class="btn btn-sm btn-outline-secondary" title="Ver detalhe"><i class="bi bi-eye"></i></a>
+                                    <?php if ($podeGerir): ?>
                                     <a href="index.php?page=clientes&id=<?= $c['id_cliente'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
                                     <form method="post" action="index.php?page=clientes&action=delete" class="d-inline">
                                         <input type="hidden" name="id" value="<?= $c['id_cliente'] ?>">
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" data-confirmar="Eliminar este cliente?" data-confirmar-texto="Esta ação não pode ser desfeita." data-confirmar-botao="Eliminar"><i class="bi bi-trash"></i></button>
                                     </form>
+                                    <?php endif; ?>
                                 </td>
-                                <?php endif; ?>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -73,8 +74,40 @@ require 'app/views/layout/header.php';
         </div>
     </div>
 
-    <?php if ($podeGerir): ?>
     <div class="col-lg-4">
+        <?php if ($detalhe): ?>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold d-flex justify-content-between align-items-center">
+                <span><?= htmlspecialchars($detalhe['nome']) ?></span>
+                <span class="badge text-bg-<?= $corEstado[$detalhe['estado']] ?>"><?= $detalhe['estado'] ?></span>
+            </div>
+            <div class="card-body">
+                <dl class="row small mb-3">
+                    <dt class="col-5 text-muted fw-normal">ID</dt>
+                    <dd class="col-7 text-end"><?= $detalhe['id_cliente'] ?></dd>
+                    <dt class="col-5 text-muted fw-normal">NIF</dt>
+                    <dd class="col-7 text-end"><?= $detalhe['nif'] ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Telefone</dt>
+                    <dd class="col-7 text-end"><?= htmlspecialchars($detalhe['telefone']) ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Email</dt>
+                    <dd class="col-7 text-end"><?= htmlspecialchars($detalhe['email']) ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Morada</dt>
+                    <dd class="col-7 text-end"><?= htmlspecialchars($detalhe['morada']) ?></dd>
+                </dl>
+                <?php if ($podeGerir): ?>
+                    <a href="index.php?page=clientes&id=<?= $detalhe['id_cliente'] ?>" class="btn btn-primary"><i class="bi bi-pencil"></i> Editar</a>
+                <?php endif; ?>
+                <a href="index.php?page=clientes&search=<?= urlencode($search) ?>&estado=<?= urlencode($estado) ?>" class="btn btn-outline-secondary">Fechar</a>
+            </div>
+        </div>
+        <?php elseif (!$podeGerir): ?>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-muted text-center py-5">
+                <i class="bi bi-eye fs-2 d-block mb-2"></i>
+                Selecione um cliente para ver o detalhe.
+            </div>
+        </div>
+        <?php else: ?>
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white fw-semibold">
                 <?= $cliente['id_cliente'] ? 'Editar cliente' : 'Novo cliente' ?>
@@ -121,8 +154,8 @@ require 'app/views/layout/header.php';
                 <a href="index.php?page=clientes" class="btn btn-outline-secondary">Cancelar</a>
             </form>
         </div>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
 </div>
 
 <?php require 'app/views/layout/footer.php'; ?>

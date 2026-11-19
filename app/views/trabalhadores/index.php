@@ -6,7 +6,7 @@ require 'app/views/layout/header.php';
 <?php require 'app/views/layout/tab_dados.php'; ?>
 
 <div class="row g-4">
-    <div class="<?= $podeGerir ? 'col-lg-8' : 'col-12' ?>">
+    <div class="col-lg-8">
         <div class="card border-0 shadow-sm">
             <form method="get" class="card-body d-flex flex-wrap gap-2">
                 <input type="hidden" name="page" value="trabalhadores">
@@ -24,7 +24,7 @@ require 'app/views/layout/header.php';
                 <?php endif; ?>
             </form>
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0<?= $podeGerir ? ' table-acoes' : '' ?>">
+                <table class="table table-hover align-middle mb-0 table-acoes">
                     <thead class="table-light">
                         <tr>
                             <th>ID</th>
@@ -34,7 +34,7 @@ require 'app/views/layout/header.php';
                             <th>Telefone</th>
                             <th>Email</th>
                             <th>Estado</th>
-                            <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,7 +45,7 @@ require 'app/views/layout/header.php';
                         <?php endif; ?>
 
                         <?php foreach ($trabalhadores as $t): ?>
-                            <tr>
+                            <tr class="<?= $detalhe && $detalhe['id_trabalhador'] == $t['id_trabalhador'] ? 'table-active' : '' ?>">
                                 <td><?= $t['id_trabalhador'] ?></td>
                                 <td><?= htmlspecialchars($t['nome']) ?></td>
                                 <td><?= htmlspecialchars($t['funcao']) ?></td>
@@ -53,15 +53,16 @@ require 'app/views/layout/header.php';
                                 <td><?= htmlspecialchars($t['telefone'] ?? '—') ?></td>
                                 <td><?= htmlspecialchars($t['email'] ?: '—') ?></td>
                                 <td><span class="badge text-bg-<?= $t['estado'] === 'Ativo' ? 'success' : 'danger' ?>"><?= $t['estado'] ?></span></td>
-                                <?php if ($podeGerir): ?>
                                 <td class="text-nowrap">
+                                    <a href="index.php?page=trabalhadores&ver=<?= $t['id_trabalhador'] ?>&search=<?= urlencode($search) ?>&estado=<?= urlencode($estado) ?>" class="btn btn-sm btn-outline-secondary" title="Ver detalhe"><i class="bi bi-eye"></i></a>
+                                    <?php if ($podeGerir): ?>
                                     <a href="index.php?page=trabalhadores&id=<?= $t['id_trabalhador'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
                                     <form method="post" action="index.php?page=trabalhadores&action=delete" class="d-inline">
                                         <input type="hidden" name="id" value="<?= $t['id_trabalhador'] ?>">
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" data-confirmar="Eliminar este trabalhador?" data-confirmar-texto="Esta ação não pode ser desfeita." data-confirmar-botao="Eliminar"><i class="bi bi-trash"></i></button>
                                     </form>
+                                    <?php endif; ?>
                                 </td>
-                                <?php endif; ?>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -70,8 +71,42 @@ require 'app/views/layout/header.php';
             <div class="card-footer bg-white text-muted small">A mostrar <?= count($trabalhadores) ?> registos</div>
         </div>
     </div>
-    <?php if ($podeGerir): ?>
     <div class="col-lg-4">
+        <?php if ($detalhe): ?>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold d-flex justify-content-between align-items-center">
+                <span><?= htmlspecialchars($detalhe['nome']) ?></span>
+                <span class="badge text-bg-<?= $detalhe['estado'] === 'Ativo' ? 'success' : 'danger' ?>"><?= $detalhe['estado'] ?></span>
+            </div>
+            <div class="card-body">
+                <dl class="row small mb-3">
+                    <dt class="col-5 text-muted fw-normal">ID</dt>
+                    <dd class="col-7 text-end"><?= $detalhe['id_trabalhador'] ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Função</dt>
+                    <dd class="col-7 text-end"><?= htmlspecialchars($detalhe['funcao']) ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Salina</dt>
+                    <dd class="col-7 text-end"><?= htmlspecialchars($detalhe['salina'] ?? '—') ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Email</dt>
+                    <dd class="col-7 text-end"><?= htmlspecialchars($detalhe['email'] ?: '—') ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Telefone</dt>
+                    <dd class="col-7 text-end"><?= htmlspecialchars($detalhe['telefone'] ?: '—') ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Admissão</dt>
+                    <dd class="col-7 text-end"><?= date('d/m/Y', strtotime($detalhe['data_admissao'])) ?></dd>
+                </dl>
+                <?php if ($podeGerir): ?>
+                    <a href="index.php?page=trabalhadores&id=<?= $detalhe['id_trabalhador'] ?>" class="btn btn-primary"><i class="bi bi-pencil"></i> Editar</a>
+                <?php endif; ?>
+                <a href="index.php?page=trabalhadores&search=<?= urlencode($search) ?>&estado=<?= urlencode($estado) ?>" class="btn btn-outline-secondary">Fechar</a>
+            </div>
+        </div>
+        <?php elseif (!$podeGerir): ?>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-muted text-center py-5">
+                <i class="bi bi-eye fs-2 d-block mb-2"></i>
+                Selecione um trabalhador para ver o detalhe.
+            </div>
+        </div>
+        <?php else: ?>
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white fw-semibold">
                 <?= $trabalhador['id_trabalhador'] ? 'Editar trabalhador' : 'Novo trabalhador' ?>
@@ -133,8 +168,8 @@ require 'app/views/layout/header.php';
                 <a href="index.php?page=trabalhadores" class="btn btn-outline-secondary">Cancelar</a>
             </form>
         </div>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
 </div>
 
 <?php require 'app/views/layout/footer.php'; ?>

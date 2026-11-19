@@ -37,6 +37,16 @@ class ProducaoController
             }
         }
 
+        $detalhe = null;
+        if (!empty($_GET['ver'])) {
+            $detalhe = $this->colheitaModel->getById($_GET['ver']);
+            if (!$detalhe) {
+                $_SESSION['msg'] = ['tipo' => 'warning', 'texto' => 'Registo de produção não encontrado.'];
+                header('Location: index.php?page=producao');
+                exit;
+            }
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $colheita['id_tanque'] = $_POST['id_tanque'] ?? '';
             $colheita['id_trabalhador'] = $_POST['id_trabalhador'] ?? '';

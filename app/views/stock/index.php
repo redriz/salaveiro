@@ -28,7 +28,7 @@ $resumo = [
 </div>
 
 <div class="row g-4">
-    <div class="<?= $podeGerir ? 'col-lg-8' : 'col-12' ?>">
+    <div class="col-lg-8">
         <div class="card border-0 shadow-sm">
             <form method="get" class="card-body d-flex gap-2">
                 <input type="hidden" name="page" value="stock">
@@ -38,7 +38,7 @@ $resumo = [
                 </div>
             </form>
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
+                <table class="table table-hover align-middle mb-0 table-acoes">
                     <thead class="table-light">
                         <tr>
                             <th>Produto</th>
@@ -46,17 +46,18 @@ $resumo = [
                             <th class="text-end">Preço</th>
                             <th class="text-end">Stock</th>
                             <th>Situação</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (!$produtos): ?>
                             <tr>
-                                <td colspan="5" class="text-center text-muted py-4">Nenhum produto encontrado.</td>
+                                <td colspan="6" class="text-center text-muted py-4">Nenhum produto encontrado.</td>
                             </tr>
                         <?php endif; ?>
 
                         <?php foreach ($produtos as $p): ?>
-                            <tr>
+                            <tr class="<?= $detalhe && $detalhe['id_produto'] == $p['id_produto'] ? 'table-active' : '' ?>">
                                 <td>
                                     <?= htmlspecialchars($p['nome']) ?>
                                     <?php if ($p['estado'] !== 'Ativo'): ?>
@@ -75,6 +76,9 @@ $resumo = [
                                         <span class="badge text-bg-success">Disponível</span>
                                     <?php endif; ?>
                                 </td>
+                                <td class="text-nowrap">
+                                    <a href="index.php?page=stock&ver=<?= $p['id_produto'] ?>&search=<?= urlencode($search) ?>" class="btn btn-sm btn-outline-secondary" title="Ver detalhe"><i class="bi bi-eye"></i></a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -84,8 +88,47 @@ $resumo = [
         </div>
     </div>
 
-    <?php if ($podeGerir): ?>
     <div class="col-lg-4">
+        <?php if ($detalhe): ?>
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white fw-semibold d-flex justify-content-between align-items-center">
+                <span><?= htmlspecialchars($detalhe['nome']) ?></span>
+                <?php if ($detalhe['stock_unidades'] == 0): ?>
+                    <span class="badge text-bg-danger">Esgotado</span>
+                <?php elseif ($detalhe['stock_unidades'] < $stockMinimo): ?>
+                    <span class="badge text-bg-warning">Stock baixo</span>
+                <?php else: ?>
+                    <span class="badge text-bg-success">Disponível</span>
+                <?php endif; ?>
+            </div>
+            <div class="card-body">
+                <dl class="row small mb-3">
+                    <dt class="col-5 text-muted fw-normal">Categoria</dt>
+                    <dd class="col-7 text-end"><?= htmlspecialchars($detalhe['categoria']) ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Peso</dt>
+                    <dd class="col-7 text-end"><?= number_format($detalhe['peso_kg'], 3, ',', ' ') ?> kg</dd>
+                    <dt class="col-5 text-muted fw-normal">Preço</dt>
+                    <dd class="col-7 text-end"><?= number_format($detalhe['preco_venda'], 2, ',', ' ') ?> €</dd>
+                    <dt class="col-5 text-muted fw-normal">Stock</dt>
+                    <dd class="col-7 text-end fw-semibold"><?= $detalhe['stock_unidades'] ?> un.</dd>
+                    <dt class="col-5 text-muted fw-normal">Valor em stock</dt>
+                    <dd class="col-7 text-end"><?= number_format($detalhe['stock_unidades'] * $detalhe['preco_venda'], 2, ',', ' ') ?> €</dd>
+                    <dt class="col-5 text-muted fw-normal">Estado</dt>
+                    <dd class="col-7 text-end"><span class="badge text-bg-<?= $corEstado[$detalhe['estado']] ?>"><?= $detalhe['estado'] ?></span></dd>
+                </dl>
+                <a href="index.php?page=stock&search=<?= urlencode($search) ?>" class="btn btn-outline-secondary">Fechar</a>
+            </div>
+        </div>
+        <?php elseif (!$podeGerir): ?>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-muted text-center py-5">
+                <i class="bi bi-eye fs-2 d-block mb-2"></i>
+                Selecione um produto para ver o detalhe.
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <?php if ($podeGerir): ?>
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white fw-semibold">Entrada de stock</div>
             <form method="post" action="index.php?page=stock&action=entrada" class="card-body">
@@ -94,7 +137,7 @@ $resumo = [
                     <select id="id_produto" name="id_produto" class="form-select" required>
                         <option value="">Selecione...</option>
                         <?php foreach ($produtos as $p): ?>
-                            <option value="<?= $p['id_produto'] ?>"><?= htmlspecialchars($p['nome']) ?> (<?= $p['stock_unidades'] ?>)</option>
+                            <option value="<?= $p['id_produto'] ?>" <?= $detalhe && $detalhe['id_produto'] == $p['id_produto'] ? 'selected' : '' ?>><?= htmlspecialchars($p['nome']) ?> (<?= $p['stock_unidades'] ?>)</option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -105,8 +148,8 @@ $resumo = [
                 <button class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Registar entrada</button>
             </form>
         </div>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
 </div>
 
 <?php require 'app/views/layout/footer.php'; ?>

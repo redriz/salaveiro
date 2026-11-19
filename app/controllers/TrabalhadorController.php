@@ -36,6 +36,16 @@ class TrabalhadorController
             }
         }
 
+        $detalhe = null;
+        if (!empty($_GET['ver'])) {
+            $detalhe = $this->trabalhadorModel->getById($_GET['ver']);
+            if (!$detalhe) {
+                $_SESSION['msg'] = ['tipo' => 'warning', 'texto' => 'Trabalhador não encontrado.'];
+                header('Location: index.php?page=trabalhadores');
+                exit;
+            }
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $trabalhador['id_funcao'] = ($_POST['id_funcao'] ?? '');
             $trabalhador['id_salina'] = ($_POST['id_salina'] ?? '');

@@ -35,6 +35,16 @@ class TanqueController
             }
         }
 
+        $detalhe = null;
+        if (!empty($_GET['ver'])) {
+            $detalhe = $this->tanqueModel->getById($_GET['ver']);
+            if (!$detalhe) {
+                $_SESSION['msg'] = ['tipo' => 'warning', 'texto' => 'Tanque não encontrado.'];
+                header('Location: index.php?page=tanques');
+                exit;
+            }
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tanque['id_salina'] = $_POST['id_salina'] ?? '';
             $tanque['codigo'] = trim($_POST['codigo'] ?? '');

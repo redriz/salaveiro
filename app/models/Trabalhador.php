@@ -38,7 +38,11 @@ class Trabalhador
 
     public function getById($id)
     {
-        $query = "SELECT * FROM " . $this->table . " WHERE id_trabalhador = :id";
+        $query = "SELECT t.*, f.nome AS funcao, s.nome AS salina
+                  FROM trabalhadores t
+                  INNER JOIN funcoes f ON f.id_funcao = t.id_funcao
+                  LEFT JOIN salinas s ON s.id_salina = t.id_salina
+                  WHERE t.id_trabalhador = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();

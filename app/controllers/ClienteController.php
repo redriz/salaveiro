@@ -35,6 +35,16 @@ class ClienteController
             }
         }
 
+        $detalhe = null;
+        if (!empty($_GET['ver'])) {
+            $detalhe = $this->clienteModel->getById($_GET['ver']);
+            if (!$detalhe) {
+                $_SESSION['msg'] = ['tipo' => 'warning', 'texto' => 'Cliente não encontrado.'];
+                header('Location: index.php?page=clientes');
+                exit;
+            }
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $cliente['nome'] = trim($_POST['nome'] ?? '');
             $cliente['nif'] = trim($_POST['nif'] ?? '');

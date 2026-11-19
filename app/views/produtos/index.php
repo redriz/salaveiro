@@ -11,7 +11,7 @@ require 'app/views/layout/header.php';
 </div>
 
 <div class="row g-4">
-    <div class="<?= $podeGerir ? 'col-lg-8' : 'col-12' ?>">
+    <div class="col-lg-8">
         <div class="card border-0 shadow-sm">
             <form method="get" class="card-body d-flex flex-wrap gap-2">
                 <input type="hidden" name="page" value="produtos">
@@ -30,7 +30,7 @@ require 'app/views/layout/header.php';
                 <?php endif; ?>
             </form>
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0<?= $podeGerir ? ' table-acoes' : '' ?>">
+                <table class="table table-hover align-middle mb-0 table-acoes">
                     <thead class="table-light">
                         <tr>
                             <th>ID</th>
@@ -40,7 +40,7 @@ require 'app/views/layout/header.php';
                             <th class="text-end">Preço</th>
                             <th class="text-end">Stock</th>
                             <th>Estado</th>
-                            <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,7 +51,7 @@ require 'app/views/layout/header.php';
                         <?php endif; ?>
 
                         <?php foreach ($produtos as $p): ?>
-                            <tr>
+                            <tr class="<?= $detalhe && $detalhe['id_produto'] == $p['id_produto'] ? 'table-active' : '' ?>">
                                 <td><?= $p['id_produto'] ?></td>
                                 <td><?= htmlspecialchars($p['nome']) ?></td>
                                 <td><?= htmlspecialchars($p['categoria']) ?></td>
@@ -59,15 +59,16 @@ require 'app/views/layout/header.php';
                                 <td class="text-end text-nowrap"><?= number_format($p['preco_venda'], 2, ',', ' ') ?> €</td>
                                 <td class="text-end"><?= $p['stock_unidades'] ?></td>
                                 <td><span class="badge text-bg-<?= $corEstado[$p['estado']] ?>"><?= $p['estado'] ?></span></td>
-                                <?php if ($podeGerir): ?>
                                 <td class="text-nowrap">
+                                    <a href="index.php?page=produtos&ver=<?= $p['id_produto'] ?>&search=<?= urlencode($search) ?>&estado=<?= urlencode($estado) ?>" class="btn btn-sm btn-outline-secondary" title="Ver detalhe"><i class="bi bi-eye"></i></a>
+                                    <?php if ($podeGerir): ?>
                                     <a href="index.php?page=produtos&id=<?= $p['id_produto'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
                                     <form method="post" action="index.php?page=produtos&action=delete" class="d-inline">
                                         <input type="hidden" name="id" value="<?= $p['id_produto'] ?>">
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" data-confirmar="Eliminar este produto?" data-confirmar-texto="Esta ação não pode ser desfeita." data-confirmar-botao="Eliminar"><i class="bi bi-trash"></i></button>
                                     </form>
+                                    <?php endif; ?>
                                 </td>
-                                <?php endif; ?>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -76,8 +77,40 @@ require 'app/views/layout/header.php';
             <div class="card-footer bg-white text-muted small">A mostrar <?= count($produtos) ?> registos</div>
         </div>
     </div>
-    <?php if ($podeGerir): ?>
     <div class="col-lg-4">
+        <?php if ($detalhe): ?>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold d-flex justify-content-between align-items-center">
+                <span><?= htmlspecialchars($detalhe['nome']) ?></span>
+                <span class="badge text-bg-<?= $corEstado[$detalhe['estado']] ?>"><?= $detalhe['estado'] ?></span>
+            </div>
+            <div class="card-body">
+                <dl class="row small mb-3">
+                    <dt class="col-5 text-muted fw-normal">ID</dt>
+                    <dd class="col-7 text-end"><?= $detalhe['id_produto'] ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Categoria</dt>
+                    <dd class="col-7 text-end"><?= htmlspecialchars($detalhe['categoria']) ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Peso</dt>
+                    <dd class="col-7 text-end"><?= number_format($detalhe['peso_kg'], 3, ',', ' ') ?> kg</dd>
+                    <dt class="col-5 text-muted fw-normal">Preço</dt>
+                    <dd class="col-7 text-end"><?= number_format($detalhe['preco_venda'], 2, ',', ' ') ?> €</dd>
+                    <dt class="col-5 text-muted fw-normal">Stock</dt>
+                    <dd class="col-7 text-end"><?= $detalhe['stock_unidades'] ?> un.</dd>
+                </dl>
+                <?php if ($podeGerir): ?>
+                    <a href="index.php?page=produtos&id=<?= $detalhe['id_produto'] ?>" class="btn btn-primary"><i class="bi bi-pencil"></i> Editar</a>
+                <?php endif; ?>
+                <a href="index.php?page=produtos&search=<?= urlencode($search) ?>&estado=<?= urlencode($estado) ?>" class="btn btn-outline-secondary">Fechar</a>
+            </div>
+        </div>
+        <?php elseif (!$podeGerir): ?>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-muted text-center py-5">
+                <i class="bi bi-eye fs-2 d-block mb-2"></i>
+                Selecione um produto para ver o detalhe.
+            </div>
+        </div>
+        <?php else: ?>
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white fw-semibold">
                 <?= $produto['id_produto'] ? 'Editar produto' : 'Novo produto' ?>
@@ -130,8 +163,8 @@ require 'app/views/layout/header.php';
                 <a href="index.php?page=produtos" class="btn btn-outline-secondary">Cancelar</a>
             </form>
         </div>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
 </div>
 
 <?php require 'app/views/layout/footer.php'; ?>

@@ -35,6 +35,16 @@ class UtilizadorController
             }
         }
 
+        $detalhe = null;
+        if (!empty($_GET['ver'])) {
+            $detalhe = $this->utilizadorModel->getById($_GET['ver']);
+            if (!$detalhe) {
+                $_SESSION['msg'] = ['tipo' => 'warning', 'texto' => 'Utilizador não encontrado.'];
+                header('Location: index.php?page=utilizadores');
+                exit;
+            }
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $utilizador['nome'] = trim($_POST['nome'] ?? '');
             $utilizador['username'] = trim($_POST['username'] ?? '');

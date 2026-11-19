@@ -37,7 +37,10 @@ class Produto
 
     public function getById($id)
     {
-        $query = "SELECT * FROM " . $this->table . " WHERE id_produto = :id";
+        $query = "SELECT p.*, c.nome AS categoria
+                  FROM produtos p
+                  INNER JOIN categorias_produto c ON c.id_categoria = p.id_categoria
+                  WHERE p.id_produto = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();

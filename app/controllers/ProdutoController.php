@@ -35,6 +35,16 @@ class ProdutoController
             }
         }
 
+        $detalhe = null;
+        if (!empty($_GET['ver'])) {
+            $detalhe = $this->produtoModel->getById($_GET['ver']);
+            if (!$detalhe) {
+                $_SESSION['msg'] = ['tipo' => 'warning', 'texto' => 'Produto não encontrado.'];
+                header('Location: index.php?page=produtos');
+                exit;
+            }
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $produto['id_categoria'] = $_POST['id_categoria'] ?? '';
             $produto['nome'] = trim($_POST['nome'] ?? '');

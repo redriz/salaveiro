@@ -12,9 +12,43 @@ $totalKg = array_sum(array_column($colheitas, 'quantidade_kg'));
 
 <div class="row g-4">
 
-    <!-- Formulário -->
-    <?php if ($podeGerir): ?>
     <div class="col-lg-4">
+        <?php if ($detalhe): ?>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold">Registo de <?= date('d/m/Y', strtotime($detalhe['data_colheita'])) ?></div>
+            <div class="card-body">
+                <dl class="row small mb-3">
+                    <dt class="col-5 text-muted fw-normal">ID</dt>
+                    <dd class="col-7 text-end"><?= $detalhe['id_colheita'] ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Salina</dt>
+                    <dd class="col-7 text-end"><?= htmlspecialchars($detalhe['salina']) ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Tanque</dt>
+                    <dd class="col-7 text-end"><?= htmlspecialchars($detalhe['tanque']) ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Trabalhador</dt>
+                    <dd class="col-7 text-end"><?= htmlspecialchars($detalhe['trabalhador']) ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Quantidade</dt>
+                    <dd class="col-7 text-end"><?= number_format($detalhe['quantidade_kg'], 2, ',', ' ') ?> kg</dd>
+                    <dt class="col-5 text-muted fw-normal">Registado por</dt>
+                    <dd class="col-7 text-end"><?= htmlspecialchars($detalhe['registado_por']) ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Registado em</dt>
+                    <dd class="col-7 text-end"><?= date('d/m/Y H:i', strtotime($detalhe['criado_em'])) ?></dd>
+                </dl>
+                <h6 class="small text-muted">Observações</h6>
+                <p class="small mb-3" style="white-space: pre-line;"><?= htmlspecialchars($detalhe['observacoes'] ?: 'Sem observações.') ?></p>
+                <?php if ($podeGerir): ?>
+                    <a href="index.php?page=producao&id=<?= $detalhe['id_colheita'] ?>&salina=<?= urlencode($idSalina) ?>" class="btn btn-primary"><i class="bi bi-pencil"></i> Editar</a>
+                <?php endif; ?>
+                <a href="index.php?page=producao&salina=<?= urlencode($idSalina) ?>" class="btn btn-outline-secondary">Fechar</a>
+            </div>
+        </div>
+        <?php elseif (!$podeGerir): ?>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-muted text-center py-5">
+                <i class="bi bi-eye fs-2 d-block mb-2"></i>
+                Selecione um registo para ver o detalhe.
+            </div>
+        </div>
+        <?php else: ?>
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white fw-semibold">
                 <?= $colheita['id_colheita'] ? 'Editar registo de produção' : 'Novo registo de produção' ?>
@@ -83,10 +117,10 @@ $totalKg = array_sum(array_column($colheitas, 'quantidade_kg'));
                 <a href="index.php?page=producao" class="btn btn-outline-secondary">Limpar</a>
             </form>
         </div>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
 
-    <div class="<?= $podeGerir ? 'col-lg-8' : 'col-12' ?>">
+    <div class="col-lg-8">
 
         <!-- Estado dos tanques -->
         <div class="card border-0 shadow-sm mb-4">
@@ -117,7 +151,7 @@ $totalKg = array_sum(array_column($colheitas, 'quantidade_kg'));
                 </form>
             </div>
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0<?= $podeGerir ? ' table-acoes' : '' ?>">
+                <table class="table table-hover align-middle mb-0 table-acoes">
                     <thead class="table-light">
                         <tr>
                             <th>Data</th>
@@ -125,7 +159,7 @@ $totalKg = array_sum(array_column($colheitas, 'quantidade_kg'));
                             <th>Tanque</th>
                             <th>Trabalhador</th>
                             <th class="text-end">Kg</th>
-                            <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -136,21 +170,22 @@ $totalKg = array_sum(array_column($colheitas, 'quantidade_kg'));
                         <?php endif; ?>
 
                         <?php foreach ($colheitas as $c): ?>
-                            <tr>
+                            <tr class="<?= $detalhe && $detalhe['id_colheita'] == $c['id_colheita'] ? 'table-active' : '' ?>">
                                 <td><?= date('d/m/Y', strtotime($c['data_colheita'])) ?></td>
                                 <td><?= htmlspecialchars($c['salina']) ?></td>
                                 <td><?= htmlspecialchars($c['tanque']) ?></td>
                                 <td><?= htmlspecialchars($c['trabalhador']) ?></td>
                                 <td class="text-end"><?= number_format($c['quantidade_kg'], 2, ',', ' ') ?></td>
-                                <?php if ($podeGerir): ?>
                                 <td class="text-nowrap">
+                                    <a href="index.php?page=producao&ver=<?= $c['id_colheita'] ?>&salina=<?= urlencode($idSalina) ?>" class="btn btn-sm btn-outline-secondary" title="Ver detalhe"><i class="bi bi-eye"></i></a>
+                                    <?php if ($podeGerir): ?>
                                     <a href="index.php?page=producao&id=<?= $c['id_colheita'] ?>&salina=<?= $idSalina ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
                                     <form method="post" action="index.php?page=producao&action=delete" class="d-inline">
                                         <input type="hidden" name="id" value="<?= $c['id_colheita'] ?>">
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" data-confirmar="Eliminar este registo?" data-confirmar-texto="Esta ação não pode ser desfeita." data-confirmar-botao="Eliminar"><i class="bi bi-trash"></i></button>
                                     </form>
+                                    <?php endif; ?>
                                 </td>
-                                <?php endif; ?>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

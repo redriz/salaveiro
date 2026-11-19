@@ -29,6 +29,16 @@ class StockController
             }
         }
 
+        $detalhe = null;
+        if (!empty($_GET['ver'])) {
+            $detalhe = $this->produtoModel->getById($_GET['ver']);
+            if (!$detalhe) {
+                $_SESSION['msg'] = ['tipo' => 'warning', 'texto' => 'Produto não encontrado.'];
+                header('Location: index.php?page=stock');
+                exit;
+            }
+        }
+
         require 'app/views/stock/index.php';
     }
 

@@ -37,7 +37,14 @@ class Colheita
 
     public function getById($id)
     {
-        $query = "SELECT * FROM " . $this->table . " WHERE id_colheita = :id";
+        $query = "SELECT c.*, t.codigo AS tanque, s.nome AS salina,
+                  tr.nome AS trabalhador, u.username AS registado_por
+                  FROM colheitas c
+                  INNER JOIN tanques t ON t.id_tanque = c.id_tanque
+                  INNER JOIN salinas s ON s.id_salina = t.id_salina
+                  INNER JOIN trabalhadores tr ON tr.id_trabalhador = c.id_trabalhador
+                  INNER JOIN utilizadores u ON u.id_utilizador = c.id_utilizador_registo
+                  WHERE c.id_colheita = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
