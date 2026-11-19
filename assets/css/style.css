@@ -133,9 +133,9 @@
 }
 
 .topbar {
-  background: #fff;
+  background: var(--bs-body-bg);
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid var(--bs-border-color);
 }
 
 .stat-icon {
@@ -172,10 +172,10 @@
   background-color: var(--bs-body-bg);
 }
 .table-acoes tbody tr:hover td:last-child:not([colspan]) {
-  background-color: #f2f2f2;
+  background-color: var(--bs-tertiary-bg);
 }
 .table-acoes tbody tr.table-active td:last-child:not([colspan]) {
-  background-color: #e9ecef;
+  background-color: var(--bs-secondary-bg);
 }
 .table-acoes th {
   white-space: nowrap;
@@ -211,4 +211,67 @@ h4 {
   .sidebar-recolhida .sidebar .nav-link {
     font-size: 1.15rem;
   }
+}
+
+.tema-toggle {
+  display: flex;
+  gap: 0.25rem;
+  margin: 0 1rem 0.75rem;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+}
+.tema-toggle button {
+  flex: 1;
+  border: 0;
+  border-radius: 0.375rem;
+  padding: 0.35rem 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1;
+}
+.tema-toggle button:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+.tema-toggle button.active {
+  color: var(--sal-azul);
+  background: #fff;
+}
+
+@media (min-width: 992px) {
+  .sidebar-recolhida .tema-toggle {
+    margin: 0 0.75rem 0.75rem;
+  }
+  .sidebar-recolhida .tema-toggle button:not(.active) {
+    display: none;
+  }
+}
+
+[data-bs-theme="dark"] {
+  --sal-azul: #0d2440;
+}
+[data-bs-theme="dark"] .bg-white {
+  background-color: var(--bs-body-bg) !important;
+}
+[data-bs-theme="dark"] .bg-light {
+  background-color: #16191c !important;
+}
+[data-bs-theme="dark"] .table-light {
+  --bs-table-color: var(--bs-body-color);
+  --bs-table-bg: var(--bs-tertiary-bg);
+  --bs-table-border-color: var(--bs-border-color);
+}
+[data-bs-theme="dark"] .stat-icon,
+[data-bs-theme="dark"] .login-icon {
+  background: rgba(91, 192, 235, 0.15);
+  color: #5bc0eb;
+}
+[data-bs-theme="dark"] .tema-toggle button.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+}
+[data-bs-theme="dark"] .table-acoes th:last-child::before,
+[data-bs-theme="dark"] .table-acoes td:last-child:not([colspan])::before {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.35), transparent);
 }

@@ -53,6 +53,7 @@ $corEstado = [
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/tema.js"></script>
     <script>
         try {
             if (localStorage.getItem('sidebar') === 'recolhida') {
@@ -77,20 +78,26 @@ $corEstado = [
                 <?php endforeach; ?>
             </nav>
 
-            <a class="nav-link mt-auto sidebar-sair" href="index.php?page=auth&action=logout" title="Sair" data-bs-toggle="modal" data-bs-target="#modal-sair">
+            <div class="tema-toggle mt-auto" role="group" aria-label="Tema">
+                <button type="button" data-tema="auto" title="Tema automático" aria-label="Tema automático"><i class="bi bi-display"></i></button>
+                <button type="button" data-tema="claro" title="Tema claro" aria-label="Tema claro"><i class="bi bi-sun"></i></button>
+                <button type="button" data-tema="escuro" title="Tema escuro" aria-label="Tema escuro"><i class="bi bi-moon"></i></button>
+            </div>
+
+            <a class="nav-link sidebar-sair" href="index.php?page=auth&action=logout" title="Sair" data-bs-toggle="modal" data-bs-target="#modal-sair">
                 <i class="bi bi-box-arrow-left"></i><span class="sidebar-texto">Sair</span>
             </a>
         </aside>
         <div class="sidebar-fundo" id="sidebar-fundo"></div>
         <div class="flex-grow-1 bg-light conteudo">
             <header class="topbar d-flex justify-content-between align-items-center gap-3">
-                <button type="button" class="btn btn-light border sidebar-toggle" id="sidebar-toggle" aria-label="Menu">
+                <button type="button" class="btn btn-outline-secondary sidebar-toggle" id="sidebar-toggle" aria-label="Menu">
                     <i class="bi bi-list"></i>
                 </button>
                 <h5 class="m-0 me-auto">
                     <?= $titulo ?? 'SalAveiro' ?>
                     <?php if (!$podeGerir && !in_array($current, ['dashboard', 'externos'])): ?>
-                        <span class="badge text-bg-light border fw-normal ms-2"><i class="bi bi-eye"></i> Só consulta</span>
+                        <span class="badge bg-body-tertiary text-body border fw-normal ms-2"><i class="bi bi-eye"></i> Só consulta</span>
                     <?php endif; ?>
                 </h5>
                 <div>
