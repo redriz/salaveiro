@@ -17,17 +17,23 @@
 
 .sidebar {
     width: 240px;
+    flex-shrink: 0;
     background: var(--sal-azul);
     position: sticky; top: 0; height: 100vh;
+    overflow-x: hidden;
+    transition: width .2s ease, transform .2s ease;
 }
 .sidebar-logo {
     color: #fff; font-size: 1.4rem; font-weight: 700;
     padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,.15);
+    white-space: nowrap;
 }
+.sidebar-logo i { margin-right: .5rem; }
 .sidebar .nav-link {
     color: rgba(255,255,255,.8);
     padding: .75rem 1.5rem;
     border-left: 4px solid transparent;
+    white-space: nowrap;
 }
 .sidebar .nav-link:hover,
 .sidebar .nav-link.active {
@@ -37,6 +43,42 @@
 }
 .sidebar .nav-link i { margin-right: .5rem; }
 .sidebar-sair { border-top: 1px solid rgba(255,255,255,.15); }
+.sidebar .sidebar-sair:hover {
+    background: var(--bs-danger);
+    border-left-color: #fff;
+}
+
+.conteudo { min-width: 0; }
+
+.sidebar-fundo { display: none; }
+
+@media (min-width: 992px) {
+    .sidebar-recolhida .sidebar { width: 72px; }
+    .sidebar-recolhida .sidebar-texto { display: none; }
+    .sidebar-recolhida .sidebar-logo { padding: 1.5rem 0; text-align: center; }
+    .sidebar-recolhida .sidebar-logo i,
+    .sidebar-recolhida .sidebar .nav-link i { margin-right: 0; }
+    .sidebar-recolhida .sidebar .nav-link { padding: .75rem 0; text-align: center; font-size: 1.15rem; }
+}
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        position: fixed; left: 0; z-index: 1045;
+        transform: translateX(-100%);
+    }
+    .sidebar-aberta .sidebar {
+        transform: none;
+        box-shadow: 0 0 24px rgba(0, 0, 0, .3);
+    }
+    .sidebar-aberta .sidebar-fundo {
+        display: block;
+        position: fixed; inset: 0; z-index: 1040;
+        background: rgba(0, 0, 0, .4);
+    }
+    .sidebar-aberta { overflow: hidden; }
+    .topbar { padding: .75rem 1rem; }
+    main.p-4 { padding: 1rem !important; }
+}
 
 .topbar {
     background: #fff;

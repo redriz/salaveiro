@@ -50,28 +50,41 @@ $corEstado = [
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+        try {
+            if (localStorage.getItem('sidebar') === 'recolhida') {
+                document.documentElement.classList.add('sidebar-recolhida');
+            }
+        } catch (e) {}
+    </script>
 </head>
 
 <body>
     <div class="d-flex min-vh-100">
-        <aside class="sidebar d-flex flex-column">
-            <div class="sidebar-logo"><i class="bi bi-droplet-fill"></i> SalAveiro</div>
+        <aside class="sidebar d-flex flex-column" id="sidebar">
+            <div class="sidebar-logo">
+                <i class="bi bi-droplet-fill"></i><span class="sidebar-texto">SalAveiro</span>
+            </div>
 
             <nav class="nav flex-column">
                 <?php foreach ($menu as $key => $item): ?>
-                    <a class="nav-link <?= $current === $key ? 'active' : '' ?>" href="index.php?page=<?= $key ?>">
-                        <i class="bi <?= $item[1] ?>"></i> <?= $item[0] ?>
+                    <a class="nav-link <?= $current === $key ? 'active' : '' ?>" href="index.php?page=<?= $key ?>" title="<?= $item[0] ?>">
+                        <i class="bi <?= $item[1] ?>"></i><span class="sidebar-texto"><?= $item[0] ?></span>
                     </a>
                 <?php endforeach; ?>
             </nav>
 
-            <a class="nav-link mt-auto sidebar-sair" href="index.php?page=auth&action=logout">
-                <i class="bi bi-box-arrow-left"></i> Sair
+            <a class="nav-link mt-auto sidebar-sair" href="index.php?page=auth&action=logout" title="Sair">
+                <i class="bi bi-box-arrow-left"></i><span class="sidebar-texto">Sair</span>
             </a>
         </aside>
-        <div class="flex-grow-1 bg-light">
-            <header class="topbar d-flex justify-content-between align-items-center">
-                <h5 class="m-0">
+        <div class="sidebar-fundo" id="sidebar-fundo"></div>
+        <div class="flex-grow-1 bg-light conteudo">
+            <header class="topbar d-flex justify-content-between align-items-center gap-3">
+                <button type="button" class="btn btn-light border sidebar-toggle" id="sidebar-toggle" aria-label="Menu">
+                    <i class="bi bi-list"></i>
+                </button>
+                <h5 class="m-0 me-auto">
                     <?= $titulo ?? 'SalAveiro' ?>
                     <?php if (!$podeGerir && !in_array($current, ['dashboard', 'externos'])): ?>
                         <span class="badge text-bg-light border fw-normal ms-2"><i class="bi bi-eye"></i> Só consulta</span>
