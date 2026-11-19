@@ -12,16 +12,16 @@ $podeGerir = podeGerir($_GET['page'] ?? 'dashboard');
 
 $menu = [
     'dashboard' => ['Dashboard', 'bi-speedometer2'],
-    'dados'     => ['Dados Principais', 'bi-database'],
-    'producao'  => ['Produção', 'bi-droplet-half'],
+    'dados' => ['Dados Principais', 'bi-database'],
+    'producao' => ['Produção', 'bi-droplet-half'],
     'comercial' => ['Comercial', 'bi-cart3'],
-    'externos'  => ['Dados Externos', 'bi-cloud-download']
+    'externos' => ['Dados Externos', 'bi-cloud-download']
 ];
 
 $corPerfil = [
     'Administrador' => 'primary',
-    'Operador'        => 'info',
-    'Consultor'      => 'secondary',
+    'Operador' => 'info',
+    'Consultor' => 'secondary',
 ];
 
 $corEstado = [
@@ -77,7 +77,7 @@ $corEstado = [
                 <?php endforeach; ?>
             </nav>
 
-            <a class="nav-link mt-auto sidebar-sair" href="index.php?page=auth&action=logout" title="Sair">
+            <a class="nav-link mt-auto sidebar-sair" href="index.php?page=auth&action=logout" title="Sair" data-bs-toggle="modal" data-bs-target="#modal-sair">
                 <i class="bi bi-box-arrow-left"></i><span class="sidebar-texto">Sair</span>
             </a>
         </aside>

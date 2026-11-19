@@ -169,10 +169,9 @@ $podeAlterar = $encomenda && !in_array($encomenda['estado'], ['Concluída', 'Can
                         </form>
 
                         <!-- Cancelar -->
-                        <form method="post" action="index.php?page=encomendas&action=cancelar"
-                            onsubmit="return confirm('Cancelar a encomenda #<?= $encomenda['id_encomenda'] ?>? O stock dos produtos será reposto.')">
+                        <form method="post" action="index.php?page=encomendas&action=cancelar">
                             <input type="hidden" name="id" value="<?= $encomenda['id_encomenda'] ?>">
-                            <button class="btn btn-outline-danger w-100"><i class="bi bi-x-circle"></i> Cancelar encomenda</button>
+                            <button class="btn btn-outline-danger w-100" data-confirmar="Cancelar a encomenda #<?= $encomenda['id_encomenda'] ?>?" data-confirmar-texto="O stock dos produtos será reposto." data-confirmar-botao="Cancelar encomenda" data-confirmar-voltar="Voltar" data-confirmar-icone="bi-x-circle"><i class="bi bi-x-circle"></i> Cancelar encomenda</button>
                         </form>
                     <?php elseif (!$podeAlterar): ?>
                         <div class="alert alert-secondary small mb-0">Encomenda <?= mb_strtolower($encomenda['estado']) ?>: já não pode ser alterada.</div>

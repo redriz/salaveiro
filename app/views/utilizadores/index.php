@@ -58,7 +58,7 @@ require 'app/views/layout/header.php';
                                     <a href="index.php?page=utilizadores&id=<?= $u['id_utilizador'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
                                     <form method="post" action="index.php?page=utilizadores&action=delete" class="d-inline">
                                         <input type="hidden" name="id" value="<?= $u['id_utilizador'] ?>">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar este utilizador?')"><i class="bi bi-trash"></i></button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" data-confirmar="Eliminar este utilizador?" data-confirmar-texto="Esta ação não pode ser desfeita." data-confirmar-botao="Eliminar"><i class="bi bi-trash"></i></button>
                                     </form>
                                 </td>
                                 <?php endif; ?>

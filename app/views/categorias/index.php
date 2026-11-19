@@ -53,7 +53,7 @@ require 'app/views/layout/header.php';
                                     <a href="index.php?page=categorias&id=<?= $c['id_categoria'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
                                     <form method="post" action="index.php?page=categorias&action=delete" class="d-inline">
                                         <input type="hidden" name="id" value="<?= $c['id_categoria'] ?>">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar esta categoria?')"><i class="bi bi-trash"></i></button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" data-confirmar="Eliminar esta categoria?" data-confirmar-texto="Esta ação não pode ser desfeita." data-confirmar-botao="Eliminar"><i class="bi bi-trash"></i></button>
                                     </form>
                                     <?php endif; ?>
                                 </td>

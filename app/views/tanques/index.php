@@ -62,7 +62,7 @@ require 'app/views/layout/header.php';
                                     <a href="index.php?page=tanques&id=<?= $t['id_tanque'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
                                     <form method="post" action="index.php?page=tanques&action=delete" class="d-inline">
                                         <input type="hidden" name="id" value="<?= $t['id_tanque'] ?>">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar este tanque?')"><i class="bi bi-trash"></i></button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" data-confirmar="Eliminar este tanque?" data-confirmar-texto="Esta ação não pode ser desfeita." data-confirmar-botao="Eliminar"><i class="bi bi-trash"></i></button>
                                     </form>
                                 </td>
                                 <?php endif; ?>
