@@ -45,6 +45,19 @@ class Trabalhador
         return $stmt->fetch();
     }
 
+    public function existeEmail($email, $ignorarId = null)
+    {
+        $query = "SELECT COUNT(*) FROM {$this->table} WHERE email = :email";
+        $params = [':email' => $email];
+        if ($ignorarId) {
+            $query .= " AND id_trabalhador <> :id";
+            $params[':id'] = $ignorarId;
+        }
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetchColumn() > 0;
+    }
+
     public function create($t)
     {
         $query = "INSERT INTO trabalhadores (id_funcao, id_salina, nome, email, telefone, data_admissao, estado)

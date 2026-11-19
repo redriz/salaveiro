@@ -59,6 +59,14 @@ class ClienteController
                 $erros['morada'] = 'A morada é obrigatória.';
             }
 
+            $idAtual = $cliente['id_cliente'] ?: null;
+            if (!isset($erros['nif']) && $this->clienteModel->existeValor('nif', $cliente['nif'], $idAtual)) {
+                $erros['nif'] = 'Já existe um cliente com esse NIF.';
+            }
+            if (!isset($erros['email']) && $this->clienteModel->existeValor('email', $cliente['email'], $idAtual)) {
+                $erros['email'] = 'Já existe um cliente com esse email.';
+            }
+
             if (empty($erros)) {
                 try {
                     if ($cliente['id_cliente'] === '') {
@@ -70,7 +78,7 @@ class ClienteController
                     header('Location: index.php?page=clientes');
                     exit;
                 } catch (PDOException $e) {
-                    $erros['nif'] = 'Já existe um cliente com esse NIF ou email.';
+                    $_SESSION['msg'] = ['tipo' => 'danger', 'texto' => 'Não foi possível guardar o cliente.'];
                 }
             }
         }

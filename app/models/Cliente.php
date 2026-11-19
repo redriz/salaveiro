@@ -41,6 +41,22 @@ class Cliente
         return $stmt->fetch();
     }
 
+    public function existeValor($campo, $valor, $ignorarId = null)
+    {
+        if (!in_array($campo, ['nif', 'email'], true)) {
+            return false;
+        }
+        $query = "SELECT COUNT(*) FROM {$this->table} WHERE {$campo} = :valor";
+        $params = [':valor' => $valor];
+        if ($ignorarId) {
+            $query .= " AND id_cliente <> :id";
+            $params[':id'] = $ignorarId;
+        }
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetchColumn() > 0;
+    }
+
     public function create($c)
     {
         $query = "INSERT INTO clientes (nome, nif, telefone, email, morada, estado)

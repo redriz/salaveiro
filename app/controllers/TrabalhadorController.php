@@ -60,6 +60,9 @@ class TrabalhadorController
             if ($trabalhador['data_admissao'] === '' || $trabalhador['data_admissao'] > date('Y-m-d')) {
                 $erros['data_admissao'] = 'Indique uma data de admissão válida (não futura).';
             }
+            if (!isset($erros['email']) && $this->trabalhadorModel->existeEmail($trabalhador['email'], $trabalhador['id_trabalhador'] ?: null)) {
+                $erros['email'] = 'Já existe um trabalhador com esse email.';
+            }
 
             if (empty($erros)) {
                 try {
@@ -72,7 +75,7 @@ class TrabalhadorController
                     header('Location: index.php?page=trabalhadores');
                     exit;
                 } catch (PDOException $e) {
-                    $erros['email'] = 'Email ou trabalhador já associado a outro utilizador.';
+                    $_SESSION['msg'] = ['tipo' => 'danger', 'texto' => 'Não foi possível guardar o trabalhador.'];
                 }
             }
         }
