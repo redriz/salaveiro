@@ -99,7 +99,7 @@ class ClienteController
             $this->clienteModel->delete($_POST['id']);
             $_SESSION['msg'] = ['tipo' => 'success', 'texto' => 'Cliente eliminado com sucesso.'];
         } catch (PDOException $e) {
-            $_SESSION['msg'] = ['tipo' => 'danger', 'texto' => 'Não é possível eliminar: o cliente tem encomendas. Pode desativá-lo.'];
+            $_SESSION['msg'] = ['tipo' => 'danger', 'texto' => 'Este cliente não pode ser eliminado porque tem encomendas registadas. Se já não for utilizado, edite-o e desmarque a opção "Ativo".'];
         }
 
         header('Location: index.php?page=clientes');
