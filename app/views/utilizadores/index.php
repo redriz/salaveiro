@@ -23,46 +23,50 @@ require 'app/views/layout/header.php';
                     <a href="index.php?page=utilizadores" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Novo utilizador</a>
                 <?php endif; ?>
             </form>
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>Nome</th>
-                        <th>Trabalhador</th>
-                        <th>Perfil</th>
-                        <th>Estado</th>
-                        <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!$utilizadores): ?>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0<?= $podeGerir ? ' table-acoes' : '' ?>">
+                    <thead class="table-light">
                         <tr>
-                            <td colspan="7" class="text-center text-muted py-4">Nenhum utilizador encontrado.</td>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Trabalhador</th>
+                            <th>Perfil</th>
+                            <th>Estado</th>
+                            <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
                         </tr>
-                    <?php endif; ?>
+                    </thead>
+                    <tbody>
+                        <?php if (!$utilizadores): ?>
+                            <tr>
+                                <td colspan="8" class="text-center text-muted py-4">Nenhum utilizador encontrado.</td>
+                            </tr>
+                        <?php endif; ?>
 
-                    <?php foreach ($utilizadores as $u): ?>
-                        <tr>
-                            <td><?= $u['id_utilizador'] ?></td>
-                            <td><?= htmlspecialchars($u['username']) ?></td>
-                            <td><?= htmlspecialchars($u['nome']) ?></td>
-                            <td><?= htmlspecialchars($u['trabalhador'] ?? '—') ?></td>
-                            <td><span class="badge text-bg-<?= $corPerfil[$u['perfil']] ?>"><?= $u['perfil'] ?></span></td>
-                            <td><span class="badge text-bg-<?= $u['estado'] === 'Ativo' ? 'success' : 'danger' ?>"><?= $u['estado'] ?></span></td>
-                            <?php if ($podeGerir): ?>
-                            <td class="text-nowrap">
-                                <a href="index.php?page=utilizadores&id=<?= $u['id_utilizador'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
-                                <form method="post" action="index.php?page=utilizadores&action=delete" class="d-inline">
-                                    <input type="hidden" name="id" value="<?= $u['id_utilizador'] ?>">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar este utilizador?')"><i class="bi bi-trash"></i></button>
-                                </form>
-                            </td>
-                            <?php endif; ?>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                        <?php foreach ($utilizadores as $u): ?>
+                            <tr>
+                                <td><?= $u['id_utilizador'] ?></td>
+                                <td><?= htmlspecialchars($u['username']) ?></td>
+                                <td><?= htmlspecialchars($u['nome']) ?></td>
+                                <td><?= htmlspecialchars($u['email']) ?></td>
+                                <td><?= htmlspecialchars($u['trabalhador'] ?? '—') ?></td>
+                                <td><span class="badge text-bg-<?= $corPerfil[$u['perfil']] ?>"><?= $u['perfil'] ?></span></td>
+                                <td><span class="badge text-bg-<?= $u['estado'] === 'Ativo' ? 'success' : 'danger' ?>"><?= $u['estado'] ?></span></td>
+                                <?php if ($podeGerir): ?>
+                                <td class="text-nowrap">
+                                    <a href="index.php?page=utilizadores&id=<?= $u['id_utilizador'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
+                                    <form method="post" action="index.php?page=utilizadores&action=delete" class="d-inline">
+                                        <input type="hidden" name="id" value="<?= $u['id_utilizador'] ?>">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar este utilizador?')"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </td>
+                                <?php endif; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
             <div class="card-footer bg-white text-muted small">A mostrar <?= count($utilizadores) ?> registos</div>
         </div>
     </div>
@@ -99,7 +103,7 @@ require 'app/views/layout/header.php';
                 </div>
                 <div class="mb-3">
                     <label for="id_trabalhador" class="form-label">Trabalhador</label>
-                    <select id="id_trabalhador" name="id_trabalhador" class="form-select">
+                    <select id="id_trabalhador" name="id_trabalhador" class="form-select <?= isset($erros['id_trabalhador']) ? 'is-invalid' : '' ?>">
                         <option value="">— Nenhum —</option>
                         <?php foreach ($trabalhadores as $t): ?>
                             <option value="<?= $t['id_trabalhador'] ?>" <?= $t['id_trabalhador'] == $utilizador['id_trabalhador'] ? 'selected' : '' ?>>
@@ -107,6 +111,7 @@ require 'app/views/layout/header.php';
                             </option>
                         <?php endforeach; ?>
                     </select>
+                    <div class="invalid-feedback"><?= $erros['id_trabalhador'] ?? '' ?></div>
                 </div>
                 <div class="mb-3">
                     <label for="id_perfil" class="form-label">Perfil *</label>

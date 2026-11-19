@@ -64,6 +64,23 @@ class Utilizador
         return $stmt->fetch();
     }
 
+    public function existeValor($campo, $valor, $ignorarId = null)
+    {
+        $permitidos = ['username', 'email', 'id_trabalhador'];
+        if (!in_array($campo, $permitidos, true)) {
+            return false;
+        }
+        $query = "SELECT COUNT(*) FROM {$this->table} WHERE {$campo} = :valor";
+        $params = [':valor' => $valor];
+        if ($ignorarId) {
+            $query .= " AND id_utilizador <> :id";
+            $params[':id'] = $ignorarId;
+        }
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetchColumn() > 0;
+    }
+
     public function create($u)
     {
         $query = "INSERT INTO utilizadores (id_perfil, id_trabalhador, nome, username, email, palavra_passe, estado)

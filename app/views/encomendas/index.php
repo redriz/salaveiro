@@ -43,7 +43,7 @@ $podeAlterar = $encomenda && !in_array($encomenda['estado'], ['Concluída', 'Can
                 <?php endif; ?>
             </form>
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
+                <table class="table table-hover align-middle mb-0 table-acoes">
                     <thead class="table-light">
                         <tr>
                             <th>Nº</th>

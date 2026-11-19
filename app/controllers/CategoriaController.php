@@ -30,6 +30,16 @@ class CategoriaController
             }
         }
 
+        $detalhe = null;
+        if (!empty($_GET['ver'])) {
+            $detalhe = $this->categoriaModel->getById($_GET['ver']);
+            if (!$detalhe) {
+                $_SESSION['msg'] = ['tipo' => 'warning', 'texto' => 'Categoria não encontrada.'];
+                header('Location: index.php?page=categorias');
+                exit;
+            }
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $categoria['nome'] = trim($_POST['nome'] ?? '');
             $categoria['descricao'] = trim($_POST['descricao'] ?? '');

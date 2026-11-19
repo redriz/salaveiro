@@ -11,7 +11,7 @@ require 'app/views/layout/header.php';
 </div>
 
 <div class="row g-4">
-    <div class="<?= $podeGerir ? 'col-lg-8' : 'col-12' ?>">
+    <div class="col-lg-8">
         <div class="card border-0 shadow-sm">
             <form method="get" class="card-body d-flex flex-wrap gap-2">
                 <input type="hidden" name="page" value="categorias">
@@ -23,47 +23,75 @@ require 'app/views/layout/header.php';
                     <a href="index.php?page=categorias" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Nova categoria</a>
                 <?php endif; ?>
             </form>
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th class="text-end">Produtos</th>
-                        <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!$categorias): ?>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 table-acoes">
+                    <thead class="table-light">
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">Nenhuma categoria encontrada.</td>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th class="text-end">Produtos</th>
+                            <th>Ações</th>
                         </tr>
-                    <?php endif; ?>
+                    </thead>
+                    <tbody>
+                        <?php if (!$categorias): ?>
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">Nenhuma categoria encontrada.</td>
+                            </tr>
+                        <?php endif; ?>
 
-                    <?php foreach ($categorias as $c): ?>
-                        <tr>
-                            <td><?= $c['id_categoria'] ?></td>
-                            <td><?= htmlspecialchars($c['nome']) ?></td>
-                            <td class="text-muted small"><?= htmlspecialchars($c['descricao'] ?? '—') ?></td>
-                            <td class="text-end"><?= $c['total_produtos'] ?></td>
-                            <?php if ($podeGerir): ?>
-                            <td class="text-nowrap">
-                                <a href="index.php?page=categorias&id=<?= $c['id_categoria'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
-                                <form method="post" action="index.php?page=categorias&action=delete" class="d-inline">
-                                    <input type="hidden" name="id" value="<?= $c['id_categoria'] ?>">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar esta categoria?')"><i class="bi bi-trash"></i></button>
-                                </form>
-                            </td>
-                            <?php endif; ?>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                        <?php foreach ($categorias as $c): ?>
+                            <tr class="<?= $detalhe && $detalhe['id_categoria'] == $c['id_categoria'] ? 'table-active' : '' ?>">
+                                <td><?= $c['id_categoria'] ?></td>
+                                <td><?= htmlspecialchars($c['nome']) ?></td>
+                                <td class="text-muted small col-descricao" title="<?= htmlspecialchars($c['descricao'] ?? '') ?>"><?= htmlspecialchars($c['descricao'] ?: '—') ?></td>
+                                <td class="text-end"><?= $c['total_produtos'] ?></td>
+                                <td class="text-nowrap">
+                                    <a href="index.php?page=categorias&ver=<?= $c['id_categoria'] ?>&search=<?= urlencode($search) ?>" class="btn btn-sm btn-outline-secondary" title="Ver detalhe"><i class="bi bi-eye"></i></a>
+                                    <?php if ($podeGerir): ?>
+                                    <a href="index.php?page=categorias&id=<?= $c['id_categoria'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
+                                    <form method="post" action="index.php?page=categorias&action=delete" class="d-inline">
+                                        <input type="hidden" name="id" value="<?= $c['id_categoria'] ?>">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar esta categoria?')"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
             <div class="card-footer bg-white text-muted small">A mostrar <?= count($categorias) ?> registos</div>
         </div>
     </div>
-    <?php if ($podeGerir): ?>
     <div class="col-lg-4">
+        <?php if ($detalhe): ?>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold"><?= htmlspecialchars($detalhe['nome']) ?></div>
+            <div class="card-body">
+                <dl class="row small mb-3">
+                    <dt class="col-5 text-muted fw-normal">ID</dt>
+                    <dd class="col-7 text-end"><?= $detalhe['id_categoria'] ?></dd>
+                    <dt class="col-5 text-muted fw-normal">Produtos</dt>
+                    <dd class="col-7 text-end"><?= $detalhe['total_produtos'] ?></dd>
+                </dl>
+                <h6 class="small text-muted">Descrição</h6>
+                <p class="small mb-3" style="white-space: pre-line;"><?= htmlspecialchars($detalhe['descricao'] ?: 'Sem descrição.') ?></p>
+                <?php if ($podeGerir): ?>
+                    <a href="index.php?page=categorias&id=<?= $detalhe['id_categoria'] ?>" class="btn btn-primary"><i class="bi bi-pencil"></i> Editar</a>
+                <?php endif; ?>
+                <a href="index.php?page=categorias&search=<?= urlencode($search) ?>" class="btn btn-outline-secondary">Fechar</a>
+            </div>
+        </div>
+        <?php elseif (!$podeGerir): ?>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-muted text-center py-5">
+                <i class="bi bi-eye fs-2 d-block mb-2"></i>
+                Selecione uma categoria para ver o detalhe.
+            </div>
+        </div>
+        <?php else: ?>
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white fw-semibold">
                 <?= $categoria['id_categoria'] ? 'Editar categoria' : 'Nova categoria' ?>
@@ -84,8 +112,8 @@ require 'app/views/layout/header.php';
                 <a href="index.php?page=categorias" class="btn btn-outline-secondary">Cancelar</a>
             </form>
         </div>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
 </div>
 
 <?php require 'app/views/layout/footer.php'; ?>

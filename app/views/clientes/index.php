@@ -25,7 +25,7 @@ require 'app/views/layout/header.php';
                 <?php endif; ?>
             </form>
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
+                <table class="table table-hover align-middle mb-0<?= $podeGerir ? ' table-acoes' : '' ?>">
                     <thead class="table-light">
                         <tr>
                             <th>ID</th>

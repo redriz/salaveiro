@@ -34,6 +34,16 @@ class SalinaController
             }
         }
 
+        $detalhe = null;
+        if (!empty($_GET['ver'])) {
+            $detalhe = $this->salinaModel->getById($_GET['ver']);
+            if (!$detalhe) {
+                $_SESSION['msg'] = ['tipo' => 'warning', 'texto' => 'Salina não encontrada.'];
+                header('Location: index.php?page=salinas');
+                exit;
+            }
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $salina['nome'] = trim($_POST['nome'] ?? '');
             $salina['localizacao'] = trim($_POST['localizacao'] ?? '');

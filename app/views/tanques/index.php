@@ -29,46 +29,48 @@ require 'app/views/layout/header.php';
                     <a href="index.php?page=tanques" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Novo tanque</a>
                 <?php endif; ?>
             </form>
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Código</th>
-                        <th>Salina</th>
-                        <th class="text-end">Área (m²)</th>
-                        <th class="text-end">Capacidade (kg)</th>
-                        <th>Estado</th>
-                        <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!$tanques): ?>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0<?= $podeGerir ? ' table-acoes' : '' ?>">
+                    <thead class="table-light">
                         <tr>
-                            <td colspan="7" class="text-center text-muted py-4">Nenhum tanque encontrado.</td>
+                            <th>ID</th>
+                            <th>Código</th>
+                            <th>Salina</th>
+                            <th class="text-end">Área (m²)</th>
+                            <th class="text-end">Capacidade (kg)</th>
+                            <th>Estado</th>
+                            <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
                         </tr>
-                    <?php endif; ?>
+                    </thead>
+                    <tbody>
+                        <?php if (!$tanques): ?>
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">Nenhum tanque encontrado.</td>
+                            </tr>
+                        <?php endif; ?>
 
-                    <?php foreach ($tanques as $t): ?>
-                        <tr>
-                            <td><?= $t['id_tanque'] ?></td>
-                            <td><?= htmlspecialchars($t['codigo']) ?></td>
-                            <td><?= htmlspecialchars($t['salina']) ?></td>
-                            <td class="text-end"><?= number_format($t['area_m2'], 2, ',', ' ') ?></td>
-                            <td class="text-end"><?= number_format($t['capacidade_maxima_kg'], 2, ',', ' ') ?></td>
-                            <td><span class="badge text-bg-<?= $corEstado[$t['estado']] ?>"><?= $t['estado'] ?></span></td>
-                            <?php if ($podeGerir): ?>
-                            <td class="text-nowrap">
-                                <a href="index.php?page=tanques&id=<?= $t['id_tanque'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
-                                <form method="post" action="index.php?page=tanques&action=delete" class="d-inline">
-                                    <input type="hidden" name="id" value="<?= $t['id_tanque'] ?>">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar este tanque?')"><i class="bi bi-trash"></i></button>
-                                </form>
-                            </td>
-                            <?php endif; ?>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                        <?php foreach ($tanques as $t): ?>
+                            <tr>
+                                <td><?= $t['id_tanque'] ?></td>
+                                <td><?= htmlspecialchars($t['codigo']) ?></td>
+                                <td><?= htmlspecialchars($t['salina']) ?></td>
+                                <td class="text-end"><?= number_format($t['area_m2'], 2, ',', ' ') ?></td>
+                                <td class="text-end"><?= number_format($t['capacidade_maxima_kg'], 2, ',', ' ') ?></td>
+                                <td><span class="badge text-bg-<?= $corEstado[$t['estado']] ?>"><?= $t['estado'] ?></span></td>
+                                <?php if ($podeGerir): ?>
+                                <td class="text-nowrap">
+                                    <a href="index.php?page=tanques&id=<?= $t['id_tanque'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
+                                    <form method="post" action="index.php?page=tanques&action=delete" class="d-inline">
+                                        <input type="hidden" name="id" value="<?= $t['id_tanque'] ?>">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar este tanque?')"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </td>
+                                <?php endif; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
             <div class="card-footer bg-white text-muted small">A mostrar <?= count($tanques) ?> registos</div>
         </div>
     </div>

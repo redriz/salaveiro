@@ -29,7 +29,8 @@ class Categoria
 
     public function getById($id)
     {
-        $query = "SELECT * FROM " . $this->table . " WHERE id_categoria = :id";
+        $query = "SELECT c.*, (SELECT COUNT(*) FROM produtos p WHERE p.id_categoria = c.id_categoria) AS total_produtos
+                  FROM categorias_produto c WHERE c.id_categoria = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();

@@ -23,46 +23,50 @@ require 'app/views/layout/header.php';
                     <a href="index.php?page=trabalhadores" class="btn btn-primary ms-auto"><i class="bi bi-plus-lg"></i> Novo trabalhador</a>
                 <?php endif; ?>
             </form>
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Função</th>
-                        <th>Salina</th>
-                        <th>Telefone</th>
-                        <th>Estado</th>
-                        <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!$trabalhadores): ?>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0<?= $podeGerir ? ' table-acoes' : '' ?>">
+                    <thead class="table-light">
                         <tr>
-                            <td colspan="7" class="text-center text-muted py-4">Nenhum trabalhador encontrado.</td>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Função</th>
+                            <th>Salina</th>
+                            <th>Telefone</th>
+                            <th>Email</th>
+                            <th>Estado</th>
+                            <?php if ($podeGerir): ?><th>Ações</th><?php endif; ?>
                         </tr>
-                    <?php endif; ?>
+                    </thead>
+                    <tbody>
+                        <?php if (!$trabalhadores): ?>
+                            <tr>
+                                <td colspan="8" class="text-center text-muted py-4">Nenhum trabalhador encontrado.</td>
+                            </tr>
+                        <?php endif; ?>
 
-                    <?php foreach ($trabalhadores as $t): ?>
-                        <tr>
-                            <td><?= $t['id_trabalhador'] ?></td>
-                            <td><?= htmlspecialchars($t['nome']) ?></td>
-                            <td><?= htmlspecialchars($t['funcao']) ?></td>
-                            <td><?= htmlspecialchars($t['salina'] ?? '—') ?></td>
-                            <td><?= htmlspecialchars($t['telefone'] ?? '—') ?></td>
-                            <td><span class="badge text-bg-<?= $t['estado'] === 'Ativo' ? 'success' : 'danger' ?>"><?= $t['estado'] ?></span></td>
-                            <?php if ($podeGerir): ?>
-                            <td class="text-nowrap">
-                                <a href="index.php?page=trabalhadores&id=<?= $t['id_trabalhador'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
-                                <form method="post" action="index.php?page=trabalhadores&action=delete" class="d-inline">
-                                    <input type="hidden" name="id" value="<?= $t['id_trabalhador'] ?>">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar este trabalhador?')"><i class="bi bi-trash"></i></button>
-                                </form>
-                            </td>
-                            <?php endif; ?>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                        <?php foreach ($trabalhadores as $t): ?>
+                            <tr>
+                                <td><?= $t['id_trabalhador'] ?></td>
+                                <td><?= htmlspecialchars($t['nome']) ?></td>
+                                <td><?= htmlspecialchars($t['funcao']) ?></td>
+                                <td><?= htmlspecialchars($t['salina'] ?? '—') ?></td>
+                                <td><?= htmlspecialchars($t['telefone'] ?? '—') ?></td>
+                                <td><?= htmlspecialchars($t['email'] ?: '—') ?></td>
+                                <td><span class="badge text-bg-<?= $t['estado'] === 'Ativo' ? 'success' : 'danger' ?>"><?= $t['estado'] ?></span></td>
+                                <?php if ($podeGerir): ?>
+                                <td class="text-nowrap">
+                                    <a href="index.php?page=trabalhadores&id=<?= $t['id_trabalhador'] ?>" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
+                                    <form method="post" action="index.php?page=trabalhadores&action=delete" class="d-inline">
+                                        <input type="hidden" name="id" value="<?= $t['id_trabalhador'] ?>">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('Tem a certeza que deseja eliminar este trabalhador?')"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </td>
+                                <?php endif; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
             <div class="card-footer bg-white text-muted small">A mostrar <?= count($trabalhadores) ?> registos</div>
         </div>
     </div>

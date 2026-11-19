@@ -60,6 +60,17 @@ class UtilizadorController
                 $erros['id_perfil'] = 'O perfil é obrigatório.';
             }
 
+            $idAtual = $utilizador['id_utilizador'] ?: null;
+            if (!isset($erros['username']) && $this->utilizadorModel->existeValor('username', $utilizador['username'], $idAtual)) {
+                $erros['username'] = 'Este username já está a ser utilizado.';
+            }
+            if (!isset($erros['email']) && $this->utilizadorModel->existeValor('email', $utilizador['email'], $idAtual)) {
+                $erros['email'] = 'Este email já está a ser utilizado.';
+            }
+            if ($utilizador['id_trabalhador'] !== '' && $this->utilizadorModel->existeValor('id_trabalhador', $utilizador['id_trabalhador'], $idAtual)) {
+                $erros['id_trabalhador'] = 'Este trabalhador já está associado a outro utilizador.';
+            }
+
             if (empty($erros)) {
                 try {
                     if ($utilizador['id_utilizador'] === '') {
@@ -71,7 +82,7 @@ class UtilizadorController
                     header('Location: index.php?page=utilizadores');
                     exit;
                 } catch (PDOException $e) {
-                    $erros['username'] = 'Username, email ou trabalhador já associado a outro utilizador.';
+                    $_SESSION['msg'] = ['tipo' => 'danger', 'texto' => 'Não foi possível guardar o utilizador.'];
                 }
             }
         }
